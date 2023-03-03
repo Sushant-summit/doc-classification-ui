@@ -51,7 +51,7 @@ export default {
       console.log("creating box", x, y, width, height)
       ctx.lineWidth = 15;
       ctx.strokeStyle = color;
-      ctx.rect(x, y, height, width);
+      ctx.rect(x, y, width, height);
       ctx.stroke();
     },
 
@@ -82,6 +82,7 @@ export default {
         let height = feature.coordinates[3] - feature.coordinates[1];
         let width = feature.coordinates[2] - feature.coordinates[0];
         let color = feature.probability < 0.8 ? 'red' : 'green';
+        console.log('res',height,width)
         createBox(x, y, width, height, color);
       })
     };

@@ -32,9 +32,7 @@
         </v-expansion-panels>
       </div>
       <div class="DocViewer" ref="docViewer">
-        <div>
-          <canvas ref='imageCanvas' @click="this.clickOnCanvas($event)"></canvas>
-        </div>
+          <canvas ref='imageCanvas'></canvas>
       </div>
     </div>
   </div>
@@ -51,17 +49,10 @@ export default {
       const ctx = canvas.getContext("2d");
       ctx.beginPath();
       console.log("creating box", x, y, width, height)
+      ctx.lineWidth = 15;
       ctx.strokeStyle = color;
       ctx.rect(x, y, height, width);
-      ctx.rect(x, y, height, width);
-      ctx.rect(x, y, height, width);
       ctx.stroke();
-    },
-
-    clickOnCanvas(e) {
-      let x = e.offsetX, y = e.offsetY;
-      console.log("click ", x, y)
-      this.createBox(x - 25, y - 25, 50, 50)
     },
 
     scrollToAFeature(x, y) {

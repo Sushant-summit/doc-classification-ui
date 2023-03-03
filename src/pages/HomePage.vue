@@ -11,19 +11,19 @@
       </v-expansion-panels>
     </v-card> -->
 
-    <v-table fixed-header style="width: 90%; margin: 20px; padding: 20px" class="elevation-3">
+    <v-table fixed-header style="width: 80%; margin: 20px; padding: 20px" class="elevation-3">
       <thead>
         <tr>
           <th class="text-left">
             <h3>Document Name</h3>
           </th>
-          <th class="text-left">
+          <th style="text-align: center;">
             <h3>Document Type</h3>
           </th>
-          <th class="text-left">
+          <th style="text-align: center;">
             <h3>Upload Date</h3>
           </th>
-          <th class="text-left">
+          <th style="text-align: center;">
             <h3>Status</h3>
           </th>
           <th></th>
@@ -31,12 +31,12 @@
       </thead>
       <tbody>
         <template v-for="(item, ind) in documents" :key="item.name">
-          <tr>
+          <tr style="font-size: small;">
             <td>{{ item.name }}</td>
-            <td>{{ item.documentType }}</td>
-            <td>{{ item.uploadedDate }}</td>
-            <td>
-              <v-chip>
+            <td style="text-align: center;">{{ item.documentType }}</td>
+            <td style="text-align: center;">{{ item.uploadedDate }}</td>
+            <td style="display:flex; align-items:center; justify-content:center;">
+              <v-chip style="font-size:smaller; padding: 6px 8px; height: auto" >
                 {{ item.status }}
               </v-chip>
             </td>

@@ -10,6 +10,10 @@ const routes = [
     path: '/detail',
     component: () => import('@/pages/DetailViewPage.vue'),
   },
+  {
+    path: '/upload',
+    component: () => import('@/pages/DocUpload.vue'),
+  },
 ]
 
 const router = createRouter({

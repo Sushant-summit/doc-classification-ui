@@ -1,7 +1,7 @@
 <template>
   <div class="containerDocDetail">
     <div class="ImageBox">
-      <v-img src="/src/assets/test10.jpg" />
+      <v-img src="/src/assets/driver-license.jpg" />
       <div class="ImgOverlay" @click="$emit('showDetailView', this.documentId)">
         <i class="fa-solid fa-magnifying-glass-plus fa-2xl" style="color:white"></i>
       </div>

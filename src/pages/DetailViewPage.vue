@@ -6,23 +6,41 @@
     <div class="containerDoc">
       <div class="DocDetailViewer">
         <v-expansion-panels>
-          <v-expansion-panel v-for="feature in this.features" :title="feature.name" :key="feature.name" @click="scrollToAFeature(feature.coordinates[0], feature.coordinates[1])">
-            <v-expansion-panel-text class="pa-4">
-              <div style="display: flex; justify-content: space-between;">
-                <h2>{{ feature.name }}</h2>
-                <v-btn style="background-color: green; color: white;" @click="this.scrollToAFeature">
-                  Force Accept
-                </v-btn>
+          <v-expansion-panel v-for="feature in this.features" :key="feature.name" @click="scrollToAFeature(feature.coordinates[0], feature.coordinates[1])">
+
+            <v-expansion-panel-title >
+              <div style="display:flex; justify-content:space-between; width: 100%; align-items: center;">
+              <div>
+                {{ feature.name }}
               </div>
+
+              <div class="text-center">
+                <v-menu open-on-hover>
+                  <template v-slot:activator="{ props }">
+                    <v-btn v-bind="props" density="comfortable" style="font-size:x-small; color: white !important;; margin: 0 5px;" color="orange" variant="flat">
+                      Take action
+                    </v-btn>
+                  </template>
+
+                  <v-list style="padding: 0">
+                    <v-list-item v-for="(item, index) in items" :key="index">
+                      <v-list-item-title :style="{color: item.color, fontSize: 'small', fontWeight: 'medium'}">{{ item.title }}</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+              </div>
+            </div>
+            </v-expansion-panel-title>
+            <v-expansion-panel-text class="pa-4">
               <v-progress-linear model-value="100" style="height:1px; color: grey; margin: 5px 0px;"></v-progress-linear>
 
               <div class="details">
-                <h3>Details</h3>
-                <v-table>
+                <h5 style="font-weight:600">Details</h5>
+                <v-table style="font-size:smaller">
                   <tbody>
-                    <tr  v-for="label in Object.keys(feature)" :key="label">
-                      <td v-if="label != 'coordinates'">{{ label }}</td>
-                      <td v-if="label != 'coordinates'" style="color: black; font-weight: bold;">{{ feature[label] }}</td>
+                    <tr v-for="label in Object.keys(feature)" :key="label">
+                      <td v-if="label != 'coordinates' && label != 'name'">{{ label }}</td>
+                      <td v-if="label != 'coordinates' && label != 'name'" style="color: black; font-weight: bold;">{{ feature[label] }}</td>
                     </tr>
                   </tbody>
                 </v-table>
@@ -32,7 +50,7 @@
         </v-expansion-panels>
       </div>
       <div class="DocViewer" ref="docViewer">
-          <canvas ref='imageCanvas' style="width: 80%"></canvas>
+        <canvas ref='imageCanvas' style="width: 80%"></canvas>
       </div>
     </div>
   </div>
@@ -40,6 +58,13 @@
 
 <script>
 export default {
+  data: () => ({
+    items: [
+      { title: 'Accept', color: 'green' },
+      { title: 'Reject', color: 'red' },
+      { title: 'Refer', color: 'orange' },
+    ],
+  }),
   props: {
     features: Array,
   },
@@ -48,7 +73,6 @@ export default {
       const canvas = this.$refs.imageCanvas;
       const ctx = canvas.getContext("2d");
       ctx.beginPath();
-      console.log("creating box", x, y, width, height)
       ctx.lineWidth = 15;
       ctx.strokeStyle = color;
       ctx.rect(x, y, width, height);
@@ -82,7 +106,7 @@ export default {
         let height = feature.coordinates[3] - feature.coordinates[1];
         let width = feature.coordinates[2] - feature.coordinates[0];
         let color = feature.probability < 0.8 ? 'red' : 'green';
-        console.log('res',height,width)
+        console.log('res', height, width)
         createBox(x, y, width, height, color);
       })
     };
@@ -97,10 +121,13 @@ export default {
 .mainContainer {
   width: 100%;
   background-color: white;
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 nav {
+  background-color: var(--gray2);
+  color: var(--light);
+  border-radius: 10px 10px 0px 0px;
   border-bottom: 1px solid grey;
   padding: 10px 20px;
 }
@@ -108,8 +135,8 @@ nav {
   width: 100%;
   display: flex;
   padding: 10px;
-  flex-direction: row;
-  max-height: 80vh;
+  max-height: 75vh;
+  min-height: 75vh;
 }
 
 .DocViewer,
@@ -117,10 +144,6 @@ nav {
   flex: 1;
   background-color: white;
   padding: 20px;
-}
-
-.DocDetailViewer {
-  max-width: 40%;
 }
 
 .DocViewer {
@@ -132,10 +155,15 @@ nav {
 
 .DocViewer {
   overflow: auto;
+  height: max-content;
+  border: 2px var(--purple) solid;
+  border-radius: 2%;
 }
 
 .DocDetailViewer {
   overflow-y: auto;
+  background-color: inherit;
+  width: 40%;
 }
 
 p {
@@ -151,5 +179,9 @@ p {
   justify-content: space-between;
   border-bottom: 1px dotted grey;
   padding: 10px 0px;
+}
+
+.v-list-item:hover {
+  background-color: #eef2f5;
 }
 </style>

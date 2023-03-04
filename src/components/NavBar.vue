@@ -14,6 +14,8 @@ nav{
 }
 
 h1{
+  display: flex;
+  align-items: center;
   font-size: 30px;
 }
 </style>

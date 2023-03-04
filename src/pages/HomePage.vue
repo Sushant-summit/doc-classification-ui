@@ -1,6 +1,9 @@
 <template>
-  <NavBar>Documents</NavBar>
-  <div class="container">
+  <NavBar style="background-color: var(--lorange); color: white;">
+      <img src="src/assets/documindbg.png" style="height: 100%; object-fit: contain"/>
+      DocUMind
+  </NavBar>
+  <div class="container" style="background-color: var(--dark)">
     <!-- <v-card v-for="(data, ind) in documents" :key="ind" width="80%" style="margin:5px; border:1px solid grey" :title="data.name" :class="data.documentVerified ? 'verifiedDocument' : 'nonVerifiedDocument'">
       <v-expansion-panels>
         <v-expansion-panel title="Show Details">
@@ -41,7 +44,7 @@
               </v-chip>
             </td>
             <td>
-              <v-btn color="info" :icon="
+              <v-btn color="red" :icon="
                   isExpanded(item.name) ? 'mdi-chevron-up' : 'mdi-chevron-down'
                 " size="x-small" variant="tonal" @click="handleExpandClick(item.name)"></v-btn>
             </td>

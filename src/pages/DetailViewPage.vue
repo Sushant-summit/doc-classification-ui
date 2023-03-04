@@ -6,12 +6,12 @@
     <div class="containerDoc">
       <div class="DocDetailViewer">
         <v-expansion-panels>
-          <v-expansion-panel v-for="feature in this.features" :key="feature.name" @click="scrollToAFeature(feature.coordinates[0], feature.coordinates[1])">
+          <v-expansion-panel v-for="(feature,idx) in this.features" :key="feature.name" @click="scrollToAFeature(feature.coordinates[0], feature.coordinates[1])">
 
             <v-expansion-panel-title >
               <div style="display:flex; justify-content:space-between; width: 100%; align-items: center;">
               <div>
-                {{ feature.name }}
+                {{ idx + 1 + '. ' + feature.name }}
               </div>
 
               <div class="text-center">
@@ -69,12 +69,15 @@ export default {
     features: Array,
   },
   methods: {
-    createBox(x, y, width, height, color = 'black') {
+    createBox(x, y, width, height, color = 'black', idx) {
       const canvas = this.$refs.imageCanvas;
       const ctx = canvas.getContext("2d");
       ctx.beginPath();
+      ctx.font = "700 80px Arial";
       ctx.lineWidth = 15;
       ctx.strokeStyle = color;
+      ctx.fillStyle = 'black';
+      ctx.fillText(idx, x-80, y+50 );
       ctx.rect(x, y, width, height);
       ctx.stroke();
     },
@@ -100,13 +103,13 @@ export default {
       ctx.canvas.height = this.height;
       ctx.drawImage(imageObj, 0, 0, this.width, this.height);
 
-      features.forEach(feature => {
+      features.forEach((feature,idx) => {
         let x = feature.coordinates[0];
         let y = feature.coordinates[1];
         let height = feature.coordinates[3] - feature.coordinates[1];
         let width = feature.coordinates[2] - feature.coordinates[0];
-        let color = feature.probability < 0.8 ? 'red' : 'green';
-        createBox(x, y, width, height, color);
+        let color = feature.probability < 0.8 ? 'red' : '#7CFC00';
+        createBox(x, y, width, height, color ,idx+1);
       })
     };
     imageObj.src = './src/assets/driver-license.jpg';
@@ -147,6 +150,7 @@ nav {
 
 .DocViewer {
   display: flex;
+  margin-left: 10px;
   flex-direction: column;
   align-items: center;
   background-color: #eef2f5;

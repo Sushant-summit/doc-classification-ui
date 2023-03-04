@@ -1,7 +1,7 @@
 <template>
   <NavBar style="background-color: var(--lorange); color: white;">
-      <img src="src/assets/documindbg.png" style="height: 100%; object-fit: contain"/>
-      DocUMind
+    <img src="src/assets/documindbg.png" style="height: 100%; object-fit: contain" />
+    DocUMind
   </NavBar>
   <div class="container" style="background-color: var(--dark)">
     <!-- <v-card v-for="(data, ind) in documents" :key="ind" width="80%" style="margin:5px; border:1px solid grey" :title="data.name" :class="data.documentVerified ? 'verifiedDocument' : 'nonVerifiedDocument'">
@@ -39,7 +39,7 @@
             <td style="text-align: center;">{{ item.documentType }}</td>
             <td style="text-align: center;">{{ item.uploadedDate }}</td>
             <td style="display:flex; align-items:center; justify-content:center;">
-              <v-chip style="font-size:smaller; padding: 6px 8px; height: auto" >
+              <v-chip style="font-size:smaller; padding: 6px 8px; height: auto">
                 {{ item.status }}
               </v-chip>
             </td>
@@ -53,7 +53,7 @@
             <v-expansion-panels v-model="panel">
               <v-expansion-panel :value="item.name">
                 <v-expansion-panel-text>
-                  <DocumentDetail @showDetailView="handleShowDetailView" :documentId="ind" />
+                  <DocumentDetail @showDetailView="handleShowDetailView" :documentId="ind" :features="getDocumentFeatures" />
                 </v-expansion-panel-text>
               </v-expansion-panel>
             </v-expansion-panels>
@@ -150,15 +150,15 @@ export default {
       status: "Auto Approved",
       features: [
         {
-          "name": "Label doesn't match the document type",
+          "name": "Label Check",
           "predictedValue": "Driving",
           "receivedValue": "PAN Card",
           "status": "Not Matched",
-          "probability": 99.47186708450317,
+          "probability": 99.76442456245422,
           "coordinates": []
         },
         {
-          "name": "logo-stamp",
+          "name": "Logo-stamp",
           "predictedValue": "",
           "receivedValue": "",
           "status": "Feature Found",
@@ -171,7 +171,7 @@ export default {
           ]
         },
         {
-          "name": "profile-image",
+          "name": "Profile-image",
           "predictedValue": "",
           "receivedValue": "",
           "status": "Feature Found",
@@ -181,6 +181,19 @@ export default {
             331.0448913574219,
             2147.237060546875,
             929.6051025390625
+          ]
+        },
+        {
+          "name": "Info Check",
+          "predictedValue": "PIYUSH BANSAL",
+          "receivedValue": "Piyush Bansal",
+          "status": "Info Found",
+          "probability": 100,
+          "coordinates": [
+            153,
+            912,
+            774,
+            984
           ]
         }
       ],

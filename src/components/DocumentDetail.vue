@@ -7,14 +7,20 @@
       </div>
     </div>
     <div class="Details">
-      <h2>Some Flags are visible here.</h2>
+      <ul class="summaryItem">
+        <li v-for="feature in features">
+        {{ feature.name }} - {{ feature.status }}</li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props:["documentId"]
+  props: [
+    "documentId",
+    "features"
+  ]
 }
 </script>
 
@@ -22,6 +28,14 @@ export default {
 
 
 <style scoped>
+
+.summaryItem{
+  list-style: none;
+}
+.summaryItem li:before {
+    content: "• ";
+    color: red;
+}
 .containerDocDetail{
   width: 100%;
   background-color: #d0dae0;

@@ -1,16 +1,20 @@
 <template>
   <div class="containerDocDetail">
     <div class="ImageBox">
-      <v-img src="/src/assets/driver-license.jpg"/>
-      <div class="ImgOverlay"  @click="$emit('showDetailView', this.documentId)">
+      <v-img src="/src/assets/test10.jpg" />
+      <div class="ImgOverlay" @click="$emit('showDetailView', this.documentId)">
         <i class="fa-solid fa-magnifying-glass-plus fa-2xl" style="color:white"></i>
       </div>
     </div>
     <div class="Details">
-      <ul class="summaryItem">
-        <li v-for="feature in features">
-        {{ feature.name }} - {{ feature.status }}</li>
-      </ul>
+      <v-table style="font-size:smaller">
+        <tbody>
+          <tr v-for="(feature, ind) in features" :key="ind">
+            <td >{{ feature.name }}</td>
+            <td style="color: black; font-weight: bold;">{{ feature.status }}</td>
+          </tr>
+        </tbody>
+      </v-table>
     </div>
   </div>
 </template>
@@ -28,15 +32,14 @@ export default {
 
 
 <style scoped>
-
-.summaryItem{
+.summaryItem {
   list-style: none;
 }
 .summaryItem li:before {
-    content: "• ";
-    color: red;
+  content: "• ";
+  color: red;
 }
-.containerDocDetail{
+.containerDocDetail {
   width: 100%;
   background-color: #d0dae0;
   display: grid;
@@ -45,12 +48,12 @@ export default {
   padding: 10px;
 }
 
- .Details{
+.Details {
   flex: 1;
   padding: 10px;
 }
 
-.ImageBox{
+.ImageBox {
   flex: 1;
   height: max-content;
   overflow: hidden;
@@ -61,11 +64,11 @@ export default {
   margin: 0 20px;
 }
 
-.ImageBox:hover .ImgOverlay{
+.ImageBox:hover .ImgOverlay {
   display: flex;
 }
 
-.ImgOverlay{
+.ImgOverlay {
   display: none;
   position: absolute;
   width: 100%;
@@ -77,5 +80,4 @@ export default {
   align-items: center;
   cursor: pointer;
 }
-
 </style>

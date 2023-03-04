@@ -53,7 +53,7 @@
             <v-expansion-panels v-model="panel">
               <v-expansion-panel :value="item.name">
                 <v-expansion-panel-text>
-                  <DocumentDetail @showDetailView="handleShowDetailView" :documentId="ind" :features="getDocumentFeatures" />
+                  <DocumentDetail @showDetailView="handleShowDetailView" :documentId="ind" :features="item.features" />
                 </v-expansion-panel-text>
               </v-expansion-panel>
             </v-expansion-panels>
@@ -199,9 +199,66 @@ export default {
       ],
     };
 
+    const customDoc2 = {
+      name: "Sample Document 2",
+      documentType: "ID Proof",
+      uploadedDate: "26/02/2023",
+      status: "Auto Approved",
+      features: [
+        {
+          "name": "Label Check",
+          "predictedValue": "Driving",
+          "receivedValue": "Driving",
+          "status": "Matched",
+          "probability": 99.76442456245422,
+          "coordinates": []
+        },
+        {
+          "name": "Logo-stamp",
+          "predictedValue": "",
+          "receivedValue": "",
+          "status": "Feature Found",
+          "probability": 0.8281083703041077,
+          "coordinates": [
+            206.29293823242188,
+            24.367475509643555,
+            459.1795349121094,
+            317.6627502441406
+          ]
+        },
+        {
+          "name": "Profile-image",
+          "predictedValue": "",
+          "receivedValue": "",
+          "status": "Feature Found",
+          "probability": 0.8335363268852234,
+          "coordinates": [
+            1625.2255859375,
+            331.0448913574219,
+            2147.237060546875,
+            929.6051025390625
+          ]
+        },
+        {
+          "name": "Info Check",
+          "predictedValue": "PIYUSH BANSAL",
+          "receivedValue": "Piyush Bansal",
+          "status": "Info Found",
+          "probability": 100,
+          "coordinates": [
+            153,
+            912,
+            774,
+            984
+          ]
+        }
+      ],
+    };
+
     console.log('calling api')
 
     this.documents.push(customDoc)
+    this.documents.push(customDoc2)
 
     // axios.get('http://127.0.0.1:5000/documind')
     //   .then(res => {

@@ -106,7 +106,10 @@ export default {
           sortable: false,
           key: "uploadedDate",
         },
-        { title: "Status", align: "end", sortable: false, key: "status" },
+        {
+          title: "Status",
+          align: "end", sortable: false, key: 
+        "status" },
         { text: "", value: "data-table-expand" },
       ],
       documents: [
@@ -153,6 +156,7 @@ export default {
           "name": "Label Check",
           "predictedValue": "Driving",
           "receivedValue": "PAN Card",
+          "action" : "",
           "status": "Not Matched",
           "probability": 99.76442456245422,
           "coordinates": []
@@ -161,6 +165,10 @@ export default {
           "name": "Logo-stamp",
           "predictedValue": "",
           "receivedValue": "",
+          "action": {
+            title: "Accept",
+            color: "Green"
+          },
           "status": "Feature Found",
           "probability": 0.8281083703041077,
           "coordinates": [
@@ -174,6 +182,7 @@ export default {
           "name": "Profile-image",
           "predictedValue": "",
           "receivedValue": "",
+          "action" : "",
           "status": "Feature Found",
           "probability": 0.8335363268852234,
           "coordinates": [
@@ -187,6 +196,7 @@ export default {
           "name": "Info Check",
           "predictedValue": "PIYUSH BANSAL",
           "receivedValue": "Piyush Bansal",
+          "action" : "",
           "status": "Info Found",
           "probability": 100,
           "coordinates": [
@@ -209,6 +219,7 @@ export default {
           "name": "Label Check",
           "predictedValue": "Driving",
           "receivedValue": "Driving",
+          "action" : "",
           "status": "Matched",
           "probability": 99.76442456245422,
           "coordinates": []
@@ -217,6 +228,7 @@ export default {
           "name": "Logo-stamp",
           "predictedValue": "",
           "receivedValue": "",
+          "action" : "",
           "status": "Feature Found",
           "probability": 0.8281083703041077,
           "coordinates": [
@@ -230,6 +242,7 @@ export default {
           "name": "Profile-image",
           "predictedValue": "",
           "receivedValue": "",
+          "action" : "",
           "status": "Feature Found",
           "probability": 0.8335363268852234,
           "coordinates": [
@@ -243,6 +256,7 @@ export default {
           "name": "Info Check",
           "predictedValue": "PIYUSH BANSAL",
           "receivedValue": "Piyush Bansal",
+          "action" : "",
           "status": "Info Found",
           "probability": 100,
           "coordinates": [

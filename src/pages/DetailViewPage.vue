@@ -17,14 +17,17 @@
               <div class="text-center">
                 <v-menu open-on-hover>
                   <template v-slot:activator="{ props }">
-                    <v-btn v-bind="props" density="comfortable" style="font-size:x-small; color: white !important;; margin: 0 5px;" color="orange" variant="flat">
-                      Take action
+                    <v-btn v-if="feature.action==''" v-bind="props" density="comfortable" style="font-size:x-small; color: white !important;; margin: 0 5px;" color="orange" variant="flat">
+                      <span >Take action</span>
                     </v-btn>
+                    
+                    <div v-else :style="{color: feature.action.color}">{{ feature.action.title }}ed</div>
+
                   </template>
 
                   <v-list style="padding: 0">
                     <v-list-item v-for="(item, index) in items" :key="index">
-                      <v-list-item-title :style="{color: item.color, fontSize: 'small', fontWeight: 'medium'}">{{ item.title }}</v-list-item-title>
+                      <v-list-item-title @click="onActionClick(feature,item)" :style="{color: item.color, fontSize: 'small', fontWeight: 'medium'}">{{ item.title }}</v-list-item-title>
                     </v-list-item>
                   </v-list>
                 </v-menu>
@@ -39,8 +42,8 @@
                 <v-table style="font-size:smaller">
                   <tbody>
                     <tr v-for="label in Object.keys(feature)" :key="label">
-                      <td v-if="label != 'coordinates' && label != 'name'">{{ label }}</td>
-                      <td v-if="label != 'coordinates' && label != 'name'" style="color: black; font-weight: bold;">{{ feature[label] }}</td>
+                      <td v-if="label != 'coordinates' && label != 'name' && label != 'action'">{{ label }}</td>
+                      <td v-if="label != 'coordinates' && label != 'name' && label != 'action'" style="color: black; font-weight: bold;">{{ feature[label] }}</td>
                     </tr>
                   </tbody>
                 </v-table>
@@ -69,6 +72,9 @@ export default {
     features: Array,
   },
   methods: {
+    onActionClick(feature,item) {
+      feature.action = item;
+    },
     createBox(x, y, width, height, color = 'black', idx) {
       const canvas = this.$refs.imageCanvas;
       const ctx = canvas.getContext("2d");

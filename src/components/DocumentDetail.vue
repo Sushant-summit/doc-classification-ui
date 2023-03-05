@@ -10,8 +10,8 @@
       <v-table style="font-size:smaller">
         <tbody>
           <tr v-for="(feature, ind) in features" :key="ind">
-            <td >{{ feature.name }}</td>
-            <td style="color: black; font-weight: bold;">{{ feature.status }}</td>
+            <td >{{ feature.name }} </td>
+            <td style="color: black; font-weight: bold;">{{ feature.status }} <span v-if="feature.name=='Label Check'"> - {{ feature.predictedValue }}</span></td>
           </tr>
         </tbody>
       </v-table>

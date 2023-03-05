@@ -82,7 +82,7 @@ export default {
       const docResults = [];
 
       for (let i = 0; i < this.documents.length; i++) {
-        await axios.post('http://127.0.0.1:5001/documind', docsCopy[0])
+        await axios.post('http://127.0.0.1:5000/documind', docsCopy[0])
           .then(res => {
             docResults.push(res.data);
           })

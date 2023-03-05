@@ -1,7 +1,10 @@
 <template>
+      <router-link to="/">
+
   <nav>
     <h1><slot></slot></h1>
   </nav>
+  </router-link>
 </template>
 
 <style scoped>

@@ -1,7 +1,7 @@
 <template>
   <div class="containerDocDetail">
     <div class="ImageBox">
-      <v-img src="/src/assets/driver-license.jpg" />
+      <v-img :src="this.image" />
       <div class="ImgOverlay" @click="$emit('showDetailView', this.documentId)">
         <i class="fa-solid fa-magnifying-glass-plus fa-2xl" style="color:white"></i>
       </div>
@@ -23,8 +23,12 @@
 export default {
   props: [
     "documentId",
-    "features"
-  ]
+    "features",
+    "image"
+  ],
+  mounted() {
+    console.log(this.image);
+  }
 }
 </script>
 

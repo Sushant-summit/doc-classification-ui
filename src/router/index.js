@@ -3,15 +3,12 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
+    name: "HOME",
     component: () => import('@/pages/HomePage.vue'),
   },
   {
-    path: '/detail',
-    component: () => import('@/pages/DetailViewPage.vue'),
-  },
-  {
-    path: '/upload',
+    path: '/',
     component: () => import('@/pages/DocUpload.vue'),
   },
 ]

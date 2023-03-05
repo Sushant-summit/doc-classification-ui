@@ -17,7 +17,7 @@
               <div class="text-center">
                 <v-menu open-on-hover>
                   <template v-slot:activator="{ props }">
-                    <v-btn v-if="feature.action==''" v-bind="props" density="comfortable" style="font-size:x-small; color: white !important;; margin: 0 5px;" color="orange" variant="flat">
+                    <v-btn v-if="!feature.action || feature.action==''" v-bind="props" density="comfortable" style="font-size:x-small; color: white !important;; margin: 0 5px;" color="orange" variant="flat">
                       <span >Take action</span>
                     </v-btn>
                     
@@ -70,6 +70,7 @@ export default {
   }),
   props: {
     features: Array,
+    image : Object,
   },
   methods: {
     onActionClick(feature,item) {
@@ -99,6 +100,8 @@ export default {
     const features = this.features;
     const createBox = this.createBox;
 
+    console.log(this.image)
+
     var canvas = this.$refs.imageCanvas;
     var ctx = canvas.getContext('2d');
     var imageObj = new Image();
@@ -118,7 +121,7 @@ export default {
         createBox(x, y, width, height, color ,idx+1);
       })
     };
-    imageObj.src = './src/assets/driver-license.jpg';
+    imageObj.src = this.image;
   }
 }
 </script>

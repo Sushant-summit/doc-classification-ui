@@ -4,15 +4,6 @@
     DocUMind
   </NavBar>
   <div class="container" style="background-color: var(--dark)">
-    <!-- <v-card v-for="(data, ind) in documents" :key="ind" width="80%" style="margin:5px; border:1px solid grey" :title="data.name" :class="data.documentVerified ? 'verifiedDocument' : 'nonVerifiedDocument'">
-      <v-expansion-panels>
-        <v-expansion-panel title="Show Details">
-          <v-expansion-panel-text>
-            <DocumentDetail @showDetailView="dialog = true" />
-          </v-expansion-panel-text>
-        </v-expansion-panel>
-      </v-expansion-panels>
-    </v-card> -->
 
     <v-table fixed-header style="width: 80%; margin: 20px; padding: 20px" class="elevation-3">
       <thead>
@@ -53,7 +44,7 @@
             <v-expansion-panels v-model="panel">
               <v-expansion-panel :value="item.name">
                 <v-expansion-panel-text>
-                  <DocumentDetail @showDetailView="handleShowDetailView" :documentId="ind" :features="item.features" />
+                  <DocumentDetail @showDetailView="handleShowDetailView" :documentId="ind" :features="item.features" :image="getDocumentImage(ind)" />
                 </v-expansion-panel-text>
               </v-expansion-panel>
             </v-expansion-panels>
@@ -63,7 +54,7 @@
     </v-table>
   </div>
   <v-dialog v-model="dialog" width="90%">
-    <DetailView :features="getDocumentFeatures" />
+    <DetailView :features="getDocumentFeatures" :image="getDocumentImage()" />
   </v-dialog>
 </template>
 
@@ -71,9 +62,9 @@
 import NavBar from "@/components/NavBar.vue";
 import DetailView from "@/pages/DetailViewPage.vue";
 import DocumentDetail from "@/components/DocumentDetail.vue";
-import axios from 'axios';
 
 export default {
+  props: ['docsCopy'],
   components: {
     NavBar,
     DetailView,
@@ -108,19 +99,18 @@ export default {
         },
         {
           title: "Status",
-          align: "end", sortable: false, key: 
-        "status" },
+          align: "end", sortable: false, key:
+            "status"
+        },
         { text: "", value: "data-table-expand" },
       ],
-      documents: [
-
-      ],
+      documents: this.$store.state.documentsResults,
     };
   },
   computed: {
     getDocumentFeatures() {
       return this.documents[this.selectedDocumentId].features;
-    }
+    },
   },
   methods: {
     handleExpandClick(docName) {
@@ -143,146 +133,17 @@ export default {
       console.log(documentId)
       this.selectedDocumentId = documentId;
       this.dialog = true;
+    },
+    getDocumentImage(index) {
+      console.log("getting image", index)
+      if (index != null) return  URL.createObjectURL(this.$store.state.documents[index].fileb64[0]);
+      else return URL.createObjectURL(this.$store.state.documents[this.selectedDocumentId].fileb64[0]);
     }
   },
   mounted() {
-    const customDoc = {
-      name: "Sample Document",
-      documentType: "Non ID Proof",
-      uploadedDate: "26/02/2023",
-      status: "Auto Approved",
-      features: [
-        {
-          "name": "Label Check",
-          "predictedValue": "Driving",
-          "receivedValue": "PAN Card",
-          "action" : "",
-          "status": "Not Matched",
-          "probability": 99.76442456245422,
-          "coordinates": []
-        },
-        {
-          "name": "Logo-stamp",
-          "predictedValue": "",
-          "receivedValue": "",
-          "action": {
-            title: "Accept",
-            color: "Green"
-          },
-          "status": "Feature Found",
-          "probability": 0.8281083703041077,
-          "coordinates": [
-            206.29293823242188,
-            24.367475509643555,
-            459.1795349121094,
-            317.6627502441406
-          ]
-        },
-        {
-          "name": "Profile-image",
-          "predictedValue": "",
-          "receivedValue": "",
-          "action" : "",
-          "status": "Feature Found",
-          "probability": 0.8335363268852234,
-          "coordinates": [
-            1625.2255859375,
-            331.0448913574219,
-            2147.237060546875,
-            929.6051025390625
-          ]
-        },
-        {
-          "name": "Info Check",
-          "predictedValue": "PIYUSH BANSAL",
-          "receivedValue": "Piyush Bansal",
-          "action" : "",
-          "status": "Info Found",
-          "probability": 100,
-          "coordinates": [
-            153,
-            912,
-            774,
-            984
-          ]
-        }
-      ],
-    };
-
-    const customDoc2 = {
-      name: "Sample Document 2",
-      documentType: "ID Proof",
-      uploadedDate: "26/02/2023",
-      status: "Auto Approved",
-      features: [
-        {
-          "name": "Label Check",
-          "predictedValue": "Driving",
-          "receivedValue": "Driving",
-          "action" : "",
-          "status": "Matched",
-          "probability": 99.76442456245422,
-          "coordinates": []
-        },
-        {
-          "name": "Logo-stamp",
-          "predictedValue": "",
-          "receivedValue": "",
-          "action" : "",
-          "status": "Feature Found",
-          "probability": 0.8281083703041077,
-          "coordinates": [
-            206.29293823242188,
-            24.367475509643555,
-            459.1795349121094,
-            317.6627502441406
-          ]
-        },
-        {
-          "name": "Profile-image",
-          "predictedValue": "",
-          "receivedValue": "",
-          "action" : "",
-          "status": "Feature Found",
-          "probability": 0.8335363268852234,
-          "coordinates": [
-            1625.2255859375,
-            331.0448913574219,
-            2147.237060546875,
-            929.6051025390625
-          ]
-        },
-        {
-          "name": "Info Check",
-          "predictedValue": "PIYUSH BANSAL",
-          "receivedValue": "Piyush Bansal",
-          "action" : "",
-          "status": "Info Found",
-          "probability": 100,
-          "coordinates": [
-            153,
-            912,
-            774,
-            984
-          ]
-        }
-      ],
-    };
-
-    console.log('calling api')
-
-    this.documents.push(customDoc)
-    this.documents.push(customDoc2)
-
-    // axios.get('http://127.0.0.1:5000/documind')
-    //   .then(res => {
-    //     customDoc['features'] = res.data;
-    //     this.documents.push(customDoc)
-    //     console.log(customDoc)
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   })
+    console.log("Home page loaded...")
+    console.log(this.$store.state.documents);
+    console.log(this.$store.state.documentsResults);
   }
 };
 </script>

@@ -7,7 +7,7 @@
     <h2 v-if="!loading">Upload Some Documents to begin with</h2>
     <v-progress-circular indeterminate v-if="loading"></v-progress-circular>
     <p v-if="loading" class="ml-2">Hold tight processing your documents</p>
-    <div style="min-width: 600px;" class="mt-10" v-else>
+    <div style="min-width: 600px; max-width: 600px;" class="mt-10" v-else>
       <v-expansion-panels>
         <v-expansion-panel v-for="(document, ind) in documents" :key="document.docid">
           <v-expansion-panel-title>
@@ -22,7 +22,7 @@
 
             <v-label>Pick doc type</v-label>
             <v-radio-group v-model="document.payload.docType">
-              <v-radio v-for="docType in docTypes" :key="docType" :label="docType" :value="docType" ></v-radio>
+              <v-radio v-for="docType in docTypes" :key="docType" :label="docType" :value="docType"></v-radio>
             </v-radio-group>
 
             <div v-if="document.payload.docType == 'ID Proof'">
@@ -38,7 +38,7 @@
       </v-expansion-panels>
       <div class="my-10 d-flex justify-space-around">
         <v-btn icon="mdi-plus" @click="addDocument"></v-btn>
-        <v-btn color="primary" @click="ff">
+        <v-btn color="primary" @click="processDocs">
           Submit
         </v-btn>
       </div>
@@ -48,6 +48,8 @@
 
 <script>
 import NavBar from "@/components/NavBar.vue";
+import axios from "axios";
+import { load } from 'webfontloader';
 export default {
   components: {
     NavBar,
@@ -61,15 +63,38 @@ export default {
     }
   },
   methods: {
-    async ff() {
+    async processDocs() {
       this.loading = true;
-      const docsCopy = this.documents
+      const docsCopy = [];
 
-      for (let i = 0; i < docsCopy.length; i++) {
+      for (let i = 0; i < this.documents.length; i++) {
+        docsCopy[i] = {
+          ...this.documents[i],
+        }
         docsCopy[i].fileb64 = await this.toBase64(docsCopy[i].fileb64[0]);
+        docsCopy[i].fileb64 = docsCopy[i].fileb64.slice(22); //removing meta data about file
       }
 
-      console.log(docsCopy)
+      this.$store.commit('setDocuments', this.documents);
+
+      const docResults = [];
+
+      for (let i = 0; i < this.documents.length; i++) {
+        await axios.post('http://127.0.0.1:5000/documind', docsCopy[0])
+          .then(res => {
+            docResults.push(res.data);
+          })
+          .catch(err => {
+            console.log(err)
+            this.loading = false;
+          })
+      }
+
+      this.$store.commit('setDocumentsResults', docResults);
+
+      this.$router.push({
+        name: "HOME",
+      })
     },
     addDocument() {
       const sampleDoc = {

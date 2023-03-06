@@ -17,7 +17,7 @@
             </v-expansion-panel-title>
             <v-expansion-panel-text>
 
-              <v-text-field label="Label" :rules="rules" hide-details="auto" v-model="document.payload.doclabel" class="my-2"></v-text-field>
+              <v-select v-model="document.payload.doclabel" hint="Pick document type" :items="labels"></v-select>
 
               <v-text-field label="Classification Threshold" :rules="rules" hide-details="auto" v-model="document.payload.classificationThreshold" class="my-2" type="Number"></v-text-field>
 
@@ -31,7 +31,7 @@
                 <v-checkbox v-for="checks in checks" :key="checks" :label="checks" :value="checks" v-model="document.payload.idChecks"></v-checkbox>
               </div>
 
-              <v-text-field label="Detail Check" :rules="rules" hide-details="auto" v-model="document.payload.detailCheck" class="my-2"></v-text-field>
+              <v-text-field label="Detail Check (Enter comma seperated value)" :rules="rules" hide-details="auto" v-model="document.payload.detailCheck" class="my-2"></v-text-field>
 
               <v-file-input chips v-model="document.fileb64" accept="image/png, image/jpeg, application/pdf"></v-file-input>
             </v-expansion-panel-text>
@@ -45,6 +45,15 @@
         </div>
       </div>
     </div>
+    <v-snackbar v-model="snackbar" multi-line>
+      {{ errorMsg }}
+
+      <template v-slot:actions>
+        <v-btn color="red" variant="text" @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -60,30 +69,48 @@ export default {
     return {
       docTypes: ["ID Proof", "Non ID Proof"],
       checks: ["logo-stamp", "profile-image"],
+      labels: ["1040", "Other", "Driving", "PAN Card", "PFS", "Aadhar"],
       documents: [],
       loading: false,
+      snackbar: false,
+      errorMsg: null,
     }
   },
   methods: {
     async processDocs() {
-      this.loading = true;
+
       const docsCopy = [];
 
       for (let i = 0; i < this.documents.length; i++) {
         docsCopy[i] = {
           ...this.documents[i],
         }
+        if (docsCopy[i].fileb64.length == 0) { //checking if user has select a doc image to proceed with.
+          this.snackbar = true;
+          this.errorMsg = `Please select a document for ${docsCopy[i].payload.doclabel}`;
+          return;
+        }
         docsCopy[i].fileb64 = await this.toBase64(docsCopy[i].fileb64[0]);
-        console.log(docsCopy[i])
         docsCopy[i].fileb64 = docsCopy[i].fileb64.split(',')[1]; //removing meta data about file
+        let detailCheck = docsCopy[i].payload.detailCheck;
+        console.log(detailCheck)
+        detailCheck = detailCheck.split(',');
+        detailCheck = detailCheck.map(check => {
+          return check.trim();
+        })
+        docsCopy[i].payload.detailCheck = detailCheck;
       }
+
+      console.log(docsCopy)
+
+      this.loading = true;
 
       this.$store.commit('setDocuments', this.documents);
 
       const docResults = [];
 
       for (let i = 0; i < this.documents.length; i++) {
-        await axios.post('http://127.0.0.1:5001/documind', docsCopy[i])
+        await axios.post('http://127.0.0.1:5000/documind', docsCopy[i])
           .then(res => {
             docResults.push(res.data);
           })
@@ -103,13 +130,13 @@ export default {
       const sampleDoc = {
         "docid": (Math.random() * 1e9).toString(),
         "filename": "2",
-        "fileb64": undefined,
+        "fileb64": [],
         "payload": {
           "docType": "ID Proof",
           "doclabel": "PAN Card ",
           "classificationThreshold": 80,
           "idChecks": [],
-          "detailCheck": ["Piyush Bansal"]
+          "detailCheck": ""
         }
       };
       this.documents.push(sampleDoc)

@@ -72,7 +72,7 @@ export default {
       { title: 'Reject', color: 'red' },
       { title: 'Refer', color: 'orange' },
     ],
-    canvasScale: 0,
+    canvasScale: 10,
   }),
   props: {
     features: Array,
@@ -87,7 +87,7 @@ export default {
       const ctx = canvas.getContext("2d");
       ctx.beginPath();
       ctx.font = "700 80px Arial";
-      ctx.lineWidth = 15;
+      ctx.lineWidth = (15/this.canvasScale)*10;
       ctx.strokeStyle = color;
       ctx.fillStyle = 'black';
       ctx.fillText(idx, x - 80, y + 50);
@@ -107,7 +107,7 @@ export default {
       this.renderOnCanvas();
     },
 
-    renderOnCanvas() {
+    renderOnCanvas(scale = 10) {
       const component = this;
       const features = component.features;
       const createBox = component.createBox;

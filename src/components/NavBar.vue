@@ -14,6 +14,8 @@ nav{
   display: flex;
   justify-content: center;
   height: 70px;
+  background-color: var(--lorange);
+  color: white;
 }
 
 h1{

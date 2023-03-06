@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NavBar style="background-color: var(--lorange); color: white;">
+    <NavBar>
       <img src="src/assets/documindbg.png" style="height: 100%; object-fit: contain" />
       DocUMind
     </NavBar>
@@ -74,6 +74,7 @@ export default {
           ...this.documents[i],
         }
         docsCopy[i].fileb64 = await this.toBase64(docsCopy[i].fileb64[0]);
+        console.log(docsCopy[i])
         docsCopy[i].fileb64 = docsCopy[i].fileb64.split(',')[1]; //removing meta data about file
       }
 
@@ -82,7 +83,7 @@ export default {
       const docResults = [];
 
       for (let i = 0; i < this.documents.length; i++) {
-        await axios.post('http://127.0.0.1:5000/documind', docsCopy[0])
+        await axios.post('http://127.0.0.1:5001/documind', docsCopy[i])
           .then(res => {
             docResults.push(res.data);
           })

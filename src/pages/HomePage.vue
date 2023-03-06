@@ -1,5 +1,5 @@
 <template>
-  <NavBar style="background-color: var(--lorange); color: white;">
+  <NavBar>
     <img src="src/assets/documindbg.png" style="height: 100%; object-fit: contain" />
     DocUMind
   </NavBar>

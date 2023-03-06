@@ -25,31 +25,48 @@
       </thead>
       <tbody>
         <template v-for="(item, ind) in documents" :key="item.name">
-          <tr style="font-size: small;">
-            <td>{{ item.name }}</td>
-            <td style="text-align: center;">{{ item.docType }}</td>
-            <td style="text-align: center;">{{ item.uploadedDate }}</td>
-            <td style="display:flex; align-items:center; justify-content:center;">
-              <v-chip style="font-size:smaller; padding: 6px 8px; height: auto">
-                {{ item.status }}
-              </v-chip>
-            </td>
-            <td>
-              <v-btn color="red" :icon="
+          <template v-if="ind < documents.length - 1">
+            <tr style="font-size: small;">
+              <td>{{ item.name }}</td>
+              <td style="text-align: center;">{{ item.docType }}</td>
+              <td style="text-align: center;">{{ item.uploadedDate }}</td>
+              <td style="display:flex; align-items:center; justify-content:center;">
+                <v-chip style="font-size:smaller; padding: 6px 8px; height: auto">
+                  {{ item.status }}
+                </v-chip>
+              </td>
+              <td>
+                <v-btn color="red" :icon="
                   isExpanded(item.docid) ? 'mdi-chevron-up' : 'mdi-chevron-down'
                 " size="x-small" variant="tonal" @click="handleExpandClick(item.docid)"></v-btn>
+              </td>
+            </tr>
+            <td :colspan="5">
+              <v-expansion-panels v-model="panel">
+                <v-expansion-panel :value="item.docid">
+                  <v-expansion-panel-text>
+                    <DocumentDetail @showDetailView="handleShowDetailView" :documentId="ind" :features="item.features" :image="getDocumentImage(ind)" />
+                  </v-expansion-panel-text>
+                </v-expansion-panel>
+              </v-expansion-panels>
             </td>
-          </tr>
-          <td :colspan="5">
-            <v-expansion-panels v-model="panel">
-              <v-expansion-panel :value="item.docid">
-                <v-expansion-panel-text>
-                  <DocumentDetail @showDetailView="handleShowDetailView" :documentId="ind" :features="item.features" :image="getDocumentImage(ind)" />
-                </v-expansion-panel-text>
-              </v-expansion-panel>
-            </v-expansion-panels>
-          </td>
+          </template>
+          <template v-else-if="Object.keys(documents[ind]).length > 1">
+            <tr>
+              <td :colspan="5">
+                <p style="text-align: center; padding: 10px; color: red; font-weight: 600;">Documents for more than one person detected.</p>
+                <div class="d-flex" style="justify-content: center;">
+                  <v-card v-for="(value, key) in documents[ind]" :key="key" width="400" :title="`Person ${key}`" class="ma-4">
+                    <v-card-text style="padding-top: 50px;">
+                      <v-chip v-for="docLabel in value" :key="docLabel" class="mr-3">{{ docLabel }}</v-chip>
+                    </v-card-text>
+                  </v-card>
+                </div>
+              </td>
+            </tr>
+          </template>
         </template>
+
       </tbody>
     </v-table>
   </div>
@@ -136,7 +153,7 @@ export default {
     },
     getDocumentImage(index) {
       console.log("getting image", index)
-      if (index != null) return  URL.createObjectURL(this.$store.state.documents[index].fileb64[0]);
+      if (index != null) return URL.createObjectURL(this.$store.state.documents[index].fileb64[0]);
       else return URL.createObjectURL(this.$store.state.documents[this.selectedDocumentId].fileb64[0]);
     }
   },

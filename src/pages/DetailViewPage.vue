@@ -8,31 +8,31 @@
         <v-expansion-panels>
           <v-expansion-panel v-for="(feature,idx) in this.features" :key="feature.name" @click="scrollToAFeature(feature.coordinates[0], feature.coordinates[1])">
 
-            <v-expansion-panel-title >
+            <v-expansion-panel-title>
               <div style="display:flex; justify-content:space-between; width: 100%; align-items: center;">
-              <div>
-                {{ idx + 1 + '. ' + feature.name }}
+                <div>
+                  {{ idx + 1 + '. ' + feature.name }}
+                </div>
+
+                <div class="text-center">
+                  <v-menu open-on-hover>
+                    <template v-slot:activator="{ props }">
+                      <v-btn v-if="!feature.action || feature.action==''" v-bind="props" density="comfortable" style="font-size:x-small; color: white !important;; margin: 0 5px;" color="orange" variant="flat">
+                        <span>Take action</span>
+                      </v-btn>
+
+                      <div v-else :style="{color: feature.action.color}">{{ feature.action.title }}ed</div>
+
+                    </template>
+
+                    <v-list style="padding: 0">
+                      <v-list-item v-for="(item, index) in items" :key="index">
+                        <v-list-item-title @click="onActionClick(feature,item)" :style="{color: item.color, fontSize: 'small', fontWeight: 'medium'}">{{ item.title }}</v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </div>
               </div>
-
-              <div class="text-center">
-                <v-menu open-on-hover>
-                  <template v-slot:activator="{ props }">
-                    <v-btn v-if="!feature.action || feature.action==''" v-bind="props" density="comfortable" style="font-size:x-small; color: white !important;; margin: 0 5px;" color="orange" variant="flat">
-                      <span >Take action</span>
-                    </v-btn>
-                    
-                    <div v-else :style="{color: feature.action.color}">{{ feature.action.title }}ed</div>
-
-                  </template>
-
-                  <v-list style="padding: 0">
-                    <v-list-item v-for="(item, index) in items" :key="index">
-                      <v-list-item-title @click="onActionClick(feature,item)" :style="{color: item.color, fontSize: 'small', fontWeight: 'medium'}">{{ item.title }}</v-list-item-title>
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
-              </div>
-            </div>
             </v-expansion-panel-title>
             <v-expansion-panel-text class="pa-4">
               <v-progress-linear model-value="100" style="height:1px; color: grey; margin: 5px 0px;"></v-progress-linear>
@@ -51,10 +51,15 @@
             </v-expansion-panel-text>
           </v-expansion-panel>
         </v-expansion-panels>
+
       </div>
-      <div class="DocViewer" ref="docViewer">
-        <canvas ref='imageCanvas' style="width: 80%"></canvas>
+      <div class="DocViewer" >
+        <div style="width:100%; overflow: auto;" ref="docViewer">
+          <canvas ref='imageCanvas' style="width: 100%"></canvas>
+        </div>
+        <v-slider v-model="canvasScale" :min="10" :max="100" :step="1" thumb-label style="width: 80%; height: 20px;"></v-slider>
       </div>
+      
     </div>
   </div>
 </template>
@@ -67,13 +72,14 @@ export default {
       { title: 'Reject', color: 'red' },
       { title: 'Refer', color: 'orange' },
     ],
+    canvasScale: 0,
   }),
   props: {
     features: Array,
-    image : Object,
+    image: Object,
   },
   methods: {
-    onActionClick(feature,item) {
+    onActionClick(feature, item) {
       feature.action = item;
     },
     createBox(x, y, width, height, color = 'black', idx) {
@@ -84,7 +90,7 @@ export default {
       ctx.lineWidth = 15;
       ctx.strokeStyle = color;
       ctx.fillStyle = 'black';
-      ctx.fillText(idx, x-80, y+50 );
+      ctx.fillText(idx, x - 80, y + 50);
       ctx.rect(x, y, width, height);
       ctx.stroke();
     },
@@ -93,35 +99,58 @@ export default {
       const viewer = this.$refs.docViewer;
       viewer.scrollTop = y;
       viewer.scrollLeft = x;
+    },
+
+    setCanvasScale(scale) {
+      var canvas = this.$refs.imageCanvas;
+      canvas.style.width = `${10*scale}%`;
+      this.renderOnCanvas();
+    },
+
+    renderOnCanvas() {
+      const component = this;
+      const features = component.features;
+      const createBox = component.createBox;
+
+      console.log(this.image)
+
+      var canvas = component.$refs.imageCanvas;
+      var ctx = canvas.getContext('2d');
+      var imageObj = new Image();
+
+      imageObj.onload = function () {
+        //setting base height and width of canvas so we can scale
+        console.log("image obj", imageObj);
+        component.canvasHeight = this.height;
+        component.canvasWidth = this.width;
+
+        ctx.canvas.width = this.width;
+        ctx.canvas.height = this.height;
+
+        ctx.drawImage(imageObj, 0, 0, this.width, this.height);
+
+        features.forEach((feature, idx) => {
+          let x = feature.coordinates[0];
+          let y = feature.coordinates[1];
+          let height = feature.coordinates[3] - feature.coordinates[1];
+          let width = feature.coordinates[2] - feature.coordinates[0];
+          let color = feature.probability < 0.8 ? 'red' : '#7CFC00';
+          createBox(x, y, width, height, color, idx + 1);
+        })
+      };
+      imageObj.src = this.image;
     }
   },
 
+  watch: {
+    canvasScale(value) {
+      this.setCanvasScale(value)
+    }
+  },
+
+
   mounted() {
-    const features = this.features;
-    const createBox = this.createBox;
-
-    console.log(this.image)
-
-    var canvas = this.$refs.imageCanvas;
-    var ctx = canvas.getContext('2d');
-    var imageObj = new Image();
-    ctx.canvas.width = window.innerWidth;
-    ctx.canvas.height = window.innerHeight;
-    imageObj.onload = function () {
-      ctx.canvas.width = this.width;
-      ctx.canvas.height = this.height;
-      ctx.drawImage(imageObj, 0, 0, this.width, this.height);
-
-      features.forEach((feature,idx) => {
-        let x = feature.coordinates[0];
-        let y = feature.coordinates[1];
-        let height = feature.coordinates[3] - feature.coordinates[1];
-        let width = feature.coordinates[2] - feature.coordinates[0];
-        let color = feature.probability < 0.8 ? 'red' : '#7CFC00';
-        createBox(x, y, width, height, color ,idx+1);
-      })
-    };
-    imageObj.src = this.image;
+    this.renderOnCanvas();
   }
 }
 </script>
@@ -163,11 +192,10 @@ nav {
   flex-direction: column;
   align-items: center;
   background-color: #eef2f5;
+  position: relative;
 }
 
 .DocViewer {
-  overflow: auto;
-  height: max-content;
   border: 2px var(--purple) solid;
   border-radius: 2%;
 }

@@ -107,18 +107,16 @@ export default {
 
       this.$store.commit('setDocuments', this.documents);
 
-      const docResults = [];
+      let docResults = [];
 
-      for (let i = 0; i < this.documents.length; i++) {
-        await axios.post('http://127.0.0.1:5000/documind', docsCopy[i])
-          .then(res => {
-            docResults.push(res.data);
-          })
-          .catch(err => {
-            console.log(err)
-            this.loading = false;
-          })
-      }
+      await axios.post('http://127.0.0.1:5000/documind', { "documents" :docsCopy })
+        .then(res => {
+          docResults = res.data;
+        })
+        .catch(err => {
+          console.log(err)
+          this.loading = false;
+        })
 
       this.$store.commit('setDocumentsResults', docResults);
 
@@ -133,7 +131,7 @@ export default {
         "fileb64": [],
         "payload": {
           "docType": "ID Proof",
-          "doclabel": "PAN Card ",
+          "doclabel": "PAN Card",
           "classificationThreshold": 80,
           "idChecks": [],
           "detailCheck": ""

@@ -27,7 +27,7 @@
         <template v-for="(item, ind) in documents" :key="item.name">
           <tr style="font-size: small;">
             <td>{{ item.name }}</td>
-            <td style="text-align: center;">{{ item.documentType }}</td>
+            <td style="text-align: center;">{{ item.docType }}</td>
             <td style="text-align: center;">{{ item.uploadedDate }}</td>
             <td style="display:flex; align-items:center; justify-content:center;">
               <v-chip style="font-size:smaller; padding: 6px 8px; height: auto">
@@ -36,13 +36,13 @@
             </td>
             <td>
               <v-btn color="red" :icon="
-                  isExpanded(item.name) ? 'mdi-chevron-up' : 'mdi-chevron-down'
-                " size="x-small" variant="tonal" @click="handleExpandClick(item.name)"></v-btn>
+                  isExpanded(item.docid) ? 'mdi-chevron-up' : 'mdi-chevron-down'
+                " size="x-small" variant="tonal" @click="handleExpandClick(item.docid)"></v-btn>
             </td>
           </tr>
           <td :colspan="5">
             <v-expansion-panels v-model="panel">
-              <v-expansion-panel :value="item.name">
+              <v-expansion-panel :value="item.docid">
                 <v-expansion-panel-text>
                   <DocumentDetail @showDetailView="handleShowDetailView" :documentId="ind" :features="item.features" :image="getDocumentImage(ind)" />
                 </v-expansion-panel-text>
@@ -113,19 +113,19 @@ export default {
     },
   },
   methods: {
-    handleExpandClick(docName) {
-      if (this.isExpanded(docName)) {
-        const data = this.panel.filter((name) => {
-          return name != docName;
+    handleExpandClick(docid) {
+      if (this.isExpanded(docid)) {
+        const data = this.panel.filter((id) => {
+          return id != docid;
         });
         this.panel = data;
       } else {
-        this.panel.push(docName);
+        this.panel.push(docid);
       }
     },
-    isExpanded(docName) {
-      let ind = this.panel.findIndex((name) => {
-        return name == docName;
+    isExpanded(docid) {
+      let ind = this.panel.findIndex((id) => {
+        return id == docid;
       });
       return ind != -1;
     },

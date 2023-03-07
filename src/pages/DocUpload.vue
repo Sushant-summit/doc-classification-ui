@@ -12,28 +12,28 @@
         <v-expansion-panels>
           <v-expansion-panel v-for="(document, ind) in documents" :key="document.docid">
             <v-expansion-panel-title>
-              <v-btn icon="mdi-delete" class="mr-2" @click="removeDocument(ind)"></v-btn>
-              <p>{{document.payload.doclabel}}</p>
+              <v-btn icon="mdi-delete" class="mr-3" @click="removeDocument(ind)"></v-btn>
+              <p>{{document.filename}}</p>
             </v-expansion-panel-title>
             <v-expansion-panel-text>
 
-              <v-select v-model="document.payload.doclabel" hint="Pick document type" :items="labels"></v-select>
+              <v-text-field label="Document Name" :rules="rules" hide-details="auto" v-model="document.filename" class="my-2"></v-text-field>
+
+              <v-select v-model="document.payload.doclabel" label="Pick document type" hide-details="auto" :items="labels"></v-select>
 
               <v-text-field label="Classification Threshold" :rules="rules" hide-details="auto" v-model="document.payload.classificationThreshold" class="my-2" type="Number"></v-text-field>
 
-              <v-label>Pick doc type</v-label>
-              <v-radio-group v-model="document.payload.docType">
-                <v-radio v-for="docType in docTypes" :key="docType" :label="docType" :value="docType"></v-radio>
-              </v-radio-group>
-
-              <div v-if="document.payload.docType == 'ID Proof'">
-                <v-label>Pick features to find</v-label>
-                <v-checkbox v-for="checks in checks" :key="checks" :label="checks" :value="checks" v-model="document.payload.idChecks"></v-checkbox>
+              <div v-if="showIdChecks(document.payload.doclabel)">
+                <v-label>Pick features to find in the ID</v-label>
+                <v-checkbox v-for="checks in configs.idChecks[document.payload.doclabel]" :key="checks" :label="checks" :value="checks" hide-details="true" v-model="document.payload.idChecks"></v-checkbox>
               </div>
 
-              <v-text-field label="Detail Check (Enter comma seperated value)" :rules="rules" hide-details="auto" v-model="document.payload.detailCheck" class="my-2"></v-text-field>
+              <div>
+                <v-text-field :label="'Detail Check (Enter comma seperated value)'" :rules="rules" hide-details="auto" v-model="document.payload.detailCheck" class="mt-2"></v-text-field>
+                <p style="font-size:small;" class="mb-2">For ex: <span style="padding-right: 5px" v-for="check,idx in configs.infoChecks[document.payload.doclabel]" :key="idx">{{ check }},</span>etc.</p>
+              </div>
 
-              <v-file-input chips v-model="document.fileb64" accept="image/png, image/jpeg, application/pdf"></v-file-input>
+              <v-file-input solo label="Click and upload a document here" v-model="document.fileb64" accept="image/png, image/jpeg, application/pdf" prepend-icon="" prepend-inner-icon="mdi-file-document"></v-file-input>
             </v-expansion-panel-text>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -67,16 +67,20 @@ export default {
   },
   data() {
     return {
-      docTypes: ["ID Proof", "Non ID Proof"],
-      checks: ["logo-stamp", "profile-image"],
+      // checks: ["logo-stamp", "profile-image"],
       labels: ["1040", "Other", "Driving", "PAN Card", "PFS", "Aadhar"],
       documents: [],
       loading: false,
       snackbar: false,
       errorMsg: null,
+      configs: null,
     }
   },
   methods: {
+    showIdChecks(docLabel) {
+      let a = ["Aadhar", "PAN Card", "Driving"]
+      return a.includes(docLabel);
+    },
     async processDocs() {
 
       const docsCopy = [];
@@ -126,12 +130,11 @@ export default {
     },
     addDocument() {
       const sampleDoc = {
-        "docid": (Math.random() * 1e9).toString(),
-        "filename": "2",
+        "docid": Math.floor((Math.random() * 1e9)).toString(),
+        "filename": "Document 1",
         "fileb64": [],
         "payload": {
-          "docType": "ID Proof",
-          "doclabel": "PAN Card",
+          "doclabel": "",
           "classificationThreshold": 80,
           "idChecks": [],
           "detailCheck": ""
@@ -151,7 +154,12 @@ export default {
       })
     },
 
-  }
+  },
+  mounted() {
+    axios.get("/configs.json").then((response) => {
+      this.configs = response.data.configs;
+    });
+  },
 }
 </script>
 

@@ -24,10 +24,10 @@
         </tr>
       </thead>
       <tbody>
-        <template v-for="(item, ind) in documents" :key="item.name">
+        <template v-for="(item, ind) in documents">
           <template v-if="ind < documents.length - 1">
             <tr style="font-size: small;">
-              <td>{{ item.name }}</td>
+              <td>{{ item.name }} - {{ item.label }}</td>
               <td style="text-align: center;">{{ item.docType }}</td>
               <td style="text-align: center;">{{ item.uploadedDate }}</td>
               <td style="display:flex; align-items:center; justify-content:center;">
@@ -51,14 +51,17 @@
               </v-expansion-panels>
             </td>
           </template>
-          <template v-else-if="Object.keys(documents[ind]).length > 1">
+          <template v-else-if="documents[ind].length > 1">
             <tr>
               <td :colspan="5">
                 <p style="text-align: center; padding: 10px; color: red; font-weight: 600;">Documents for more than one person detected.</p>
                 <div class="d-flex" style="justify-content: center;">
-                  <v-card v-for="(value, key) in documents[ind]" :key="key" width="400" :title="`Person ${key}`" class="ma-4">
-                    <v-card-text style="padding-top: 50px;">
-                      <v-chip v-for="docLabel in value" :key="docLabel" class="mr-3">{{ docLabel }}</v-chip>
+                  <v-card v-for="(value, idx) in documents[ind]" :key="idx" width="400" :title="`Person ${idx + 1}`" class="ma-4">
+                    <v-card-text class="personCard" style="padding-top: 20px;">
+                      <div v-for="docLabel in value" :key="docLabel" class="mr-3 personCardDetails">
+                        <v-img :width="100" cover aspect-ratio="16/9" :src="'data:image/jpeg;base64,' + docLabel[0]"></v-img>
+                        <p>{{ docLabel[1] }}</p>
+                      </div>
                     </v-card-text>
                   </v-card>
                 </div>
@@ -195,5 +198,19 @@ tbody tr:nth-of-type(odd) {
 
 .v-expansion-panel-text__wrapper {
   padding: 0px !important;
+}
+
+.personCard {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: baseline;
+  text-align: center;
+  justify-items: center;
+}
+
+.personCardDetails {
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
 }
 </style>

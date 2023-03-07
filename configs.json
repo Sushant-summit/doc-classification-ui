@@ -1,0 +1,18 @@
+{
+  "configs": {
+    "metrics": {
+      "classificationThreshold": 80,
+      "autoApprovalThreshold": 95
+    },
+    "idChecks": {
+      "PAN Card":["logo-stamp", "profile-image"],
+      "Aadhar": ["logo-stamp", "profile-image"],
+      "Driving": ["profile-image"]
+    },
+    "infoChecks":{
+      "PAN Card": ["Name", "PAN Card Number"],
+      "Aadhar" : ["Name", "Aadhar Number", "Gender"],
+      "Driving": ["Name", "Driving License Number","Date of Issue"]
+    }
+  }
+}

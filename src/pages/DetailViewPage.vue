@@ -42,8 +42,8 @@
                 <v-table style="font-size:smaller">
                   <tbody>
                     <tr v-for="label in Object.keys(feature)" :key="label">
-                      <td v-if="label != 'coordinates' && label != 'name' && label != 'action'">{{ label }}</td>
-                      <td v-if="label != 'coordinates' && label != 'name' && label != 'action'" style="color: black; font-weight: bold;">{{ feature[label] }}</td>
+                      <td v-if="label != 'coordinates' && label != 'name' && label != 'action' && feature[label]!=''">{{ label }}</td>
+                      <td v-if="label != 'coordinates' && label != 'name' && label != 'action' && feature[label]!=''" style="color: black; font-weight: bold;">{{ feature[label] }}</td>
                     </tr>
                   </tbody>
                 </v-table>

@@ -54,7 +54,8 @@
           <template v-else-if="documents[ind].length > 1">
             <tr>
               <td :colspan="5">
-                <p style="text-align: center; padding: 10px; color: red; font-weight: 600;">Documents for more than one person detected.</p>
+                <p style="text-align: center; padding: 10px; color: red; font-weight: 600;">We suspect the uploaded documents are not of a single person.</p>
+                <p>These are the persons we detected</p>
                 <div class="d-flex" style="justify-content: center;">
                   <v-card v-for="(value, idx) in documents[ind]" :key="idx" width="400" :title="`Person ${idx + 1}`" class="ma-4">
                     <v-card-text class="personCard" style="padding-top: 20px;">

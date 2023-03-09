@@ -13,11 +13,11 @@
             </template>
           </v-list-item>
         </v-list>
-        <div style="width:100%">
-          <v-btn @click="addRelation" style="width:100%; margin-bottom:10px">
+        <div style="width:100%; display: flex; flex-direction: column; align-items: center;">
+          <v-btn @click="addRelation" style="width:80%; margin-bottom:10px ;text-decoration: underline; text-decoration-color: #B8252B;">
             Add Relation
           </v-btn>
-          <v-btn style="background-color:#B8252B; color:white; width:100%" @click="processDocs">
+          <v-btn style="background-color:#B8252B; color:white; width:80%" @click="processDocs">
             Submit
           </v-btn>
         </div>
@@ -66,7 +66,7 @@
             </div>
           </div>
         </template>
-        <h2 v-else class="mt-5">Please create a relation</h2>
+        <h2 v-else class="mt-5" style="font-weight: 500;">Please create a relation</h2>
 
       </v-main>
     </v-layout>

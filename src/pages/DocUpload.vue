@@ -120,7 +120,7 @@ export default {
 
         const docsCopy = [];
 
-        if (this.relations[i].relationName.length == 0  || this.relations[i].relationImage.length == 0) {
+        if (this.relations[i].relationName.length == 0 ) {
           this.snackbar = true;
           this.errorMsg = `Please enter all the details for ${this.relations[i].relationName}`;
           return;

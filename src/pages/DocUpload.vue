@@ -131,32 +131,32 @@ export default {
         const documents = this.relations[i].documents;
 
         for (let j = 0; j < documents.length; j++) {
-          docsCopy[i] = {
+          docsCopy[j] = {
             ...documents[j],
           }
           if (docsCopy[j].fileb64.length == 0) { //checking if user has select a doc image to proceed with.
             this.snackbar = true;
-            this.errorMsg = `Please select a document for ${this.relations[i].relationName} / ${docsCopy[i].payload.doclabel}`;
+            this.errorMsg = `Please select a document for ${this.relations[i].relationName} / ${docsCopy[j].payload.doclabel}`;
             return;
           }
-          if (docsCopy[i].payload.doclabel.length == 0) { //checking if user has select a doc label
+          if (docsCopy[j].payload.doclabel.length == 0) { //checking if user has select a doc label
             this.snackbar = true;
-            this.errorMsg = `Please select a doc Label for ${this.relations[i].relationName} documents`;
+            this.errorMsg = `Please select a doc Label for ${this.relations[j].relationName} documents`;
             return;
           }
-          docsCopy[i].fileb64 = await this.toBase64(docsCopy[i].fileb64[0]);
+          docsCopy[j].fileb64 = await this.toBase64(docsCopy[j].fileb64[0]);
 
-          let detailCheck = docsCopy[i].payload.detailCheck;
+          let detailCheck = docsCopy[j].payload.detailCheck;
 
           detailCheck = detailCheck.split(',');
           detailCheck = detailCheck.map(check => {
             return check.trim();
           })
 
-          docsCopy[i].payload.detailCheck = detailCheck;
+          docsCopy[j].payload.detailCheck = detailCheck;
         }
 
-        relationsCopy[i].documents = documents;
+        relationsCopy[i].documents = docsCopy;
       }
 
       const requestObject = {
@@ -192,6 +192,7 @@ export default {
         'dob': '',
         'relationImage': '',
         'documents': [],
+        'relationId':Math.floor((Math.random() * 1e9))
       }
       this.relations.push(sampleRelation);
     },

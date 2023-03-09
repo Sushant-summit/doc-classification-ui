@@ -30,7 +30,6 @@
 
         <template v-else-if="relations.length > 0">
           <v-text-field label="Relation Name" :rules="rules" v-model="relations[selectedRelation].relationName" hide-details="auto" style="width:90%; max-height: 50px;" class="my-2"></v-text-field>
-          <v-text-field label="Date of Birth" :rules="rules" hide-details="auto" style="width:90%; max-height: 50px;" class="my-2" type="date" v-model="relations[selectedRelation].dob"></v-text-field>
           <v-file-input solo label="Click and upload user image" style="width:90%; max-height: 50px; margin-top: 10px;" accept="image/png, image/jpeg, application/pdf" prepend-icon="" prepend-inner-icon="mdi-file-document" v-model="relations[selectedRelation].relationImage"></v-file-input>
 
           <div class="formContainer">
@@ -121,7 +120,7 @@ export default {
 
         const docsCopy = [];
 
-        if (this.relations[i].relationName.length == 0 || this.relations[i].dob.length == 0 || this.relations[i].relationImage.length == 0) {
+        if (this.relations[i].relationName.length == 0  || this.relations[i].relationImage.length == 0) {
           this.snackbar = true;
           this.errorMsg = `Please enter all the details for ${this.relations[i].relationName}`;
           return;
@@ -194,7 +193,6 @@ export default {
     addRelation() {
       const sampleRelation = {
         'relationName': 'Relation x',
-        'dob': '',
         'relationImage': '',
         'documents': [],
         'relationId': Math.floor((Math.random() * 1e9))

@@ -6,12 +6,11 @@
     <div class="containerDoc">
       <div class="DocDetailViewer">
         <v-expansion-panels>
-          <v-expansion-panel v-for="(feature,idx) in this.features" :key="feature.name" @click="scrollToAFeature(feature.coordinates[0], feature.coordinates[1])">
-
-            <v-expansion-panel-title>
+          <v-expansion-panel v-for="(feature,idx) in this.features" :key="feature.name" @click="scrollToAFeature(feature.coordinates[0], feature.coordinates[1])" >
+            <v-expansion-panel-title :style="{ border: '2px ' + this.codeColors[feature.code] + ' solid'}">
               <div style="display:flex; justify-content:space-between; width: 100%; align-items: center;">
                 <div>
-                  {{ idx + 1 + '. ' + feature.name }}
+                  {{ idx + 1 + '. ' + feature.name + ' - ' + feature.status }}
                 </div>
 
                 <div class="text-center">
@@ -42,8 +41,8 @@
                 <v-table style="font-size:smaller">
                   <tbody>
                     <tr v-for="label in Object.keys(feature)" :key="label">
-                      <td v-if="label != 'coordinates' && label != 'name' && label != 'action'">{{ label }}</td>
-                      <td v-if="label != 'coordinates' && label != 'name' && label != 'action'" style="color: black; font-weight: bold;">{{ feature[label] }}</td>
+                      <td v-if="label != 'coordinates' && label != 'name' && label != 'action' && label !='code' && feature[label]!=''">{{ label }}</td>
+                      <td v-if="label != 'coordinates' && label != 'name' && label != 'action' && label !='code' && feature[label]!=''" style="color: black; font-weight: bold;">{{ feature[label] }}</td>
                     </tr>
                   </tbody>
                 </v-table>
@@ -72,6 +71,11 @@ export default {
       { title: 'Reject', color: 'red' },
       { title: 'Refer', color: 'orange' },
     ],
+    codeColors: {
+      '404': 'red',
+      '402': 'yellow',
+      '200': 'white',
+    },
     canvasScale: 10,
   }),
   props: {

@@ -60,13 +60,18 @@
                 </td>
               </tr>
               <td :colspan="5">
-                <v-expansion-panels v-model="panel">
-                  <v-expansion-panel :value="item.docid">
-                    <v-expansion-panel-text>
-                      <DocumentDetail @showDetailView="handleShowDetailView" :documentId="ind" :features="item.features" :image="getDocumentImage(ind)" />
-                    </v-expansion-panel-text>
-                  </v-expansion-panel>
-                </v-expansion-panels>
+                <p style="text-align: center; padding: 10px; color: red; font-weight: 600;">We suspect the uploaded documents are not of a single person.</p>
+                <p>These are the persons we detected</p>
+                <div class="d-flex" style="justify-content: center;">
+                  <v-card v-for="(value, idx) in documents[ind]" :key="idx" width="400" :title="`Person ${idx + 1}`" class="ma-4">
+                    <v-card-text class="personCard" style="padding-top: 20px;">
+                      <div v-for="docLabel in value" :key="docLabel" class="mr-3 personCardDetails">
+                        <v-img :width="100" cover aspect-ratio="16/9" :src="'data:image/jpeg;base64,' + docLabel[0]"></v-img>
+                        <p>{{ docLabel[1] }}</p>
+                      </div>
+                    </v-card-text>
+                  </v-card>
+                </div>
               </td>
             </template>
             <template v-else-if="documents[ind].length > 1">

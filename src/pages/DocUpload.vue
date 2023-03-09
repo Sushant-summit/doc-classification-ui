@@ -170,7 +170,8 @@ export default {
 
       let relationResults = [];
 
-      await axios.post('http://127.0.0.1:5000/documind', { "documents": requestObject })
+      console.log(requestObject)
+      await axios.post('http://127.0.0.1:5000/documind', requestObject )
         .then(res => {
           relationResults = res.data;
         })

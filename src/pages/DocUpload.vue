@@ -7,6 +7,7 @@
     <v-layout>
       <v-navigation-drawer floating permanent>
         <v-list density="compact" nav>
+          <p style="padding-bottom: 15px; font-size: smaller;">Application Id: 1412412</p>
           <v-list-item :title="relation.relationName" :style="{ backgroundColor: ind == selectedRelation ? 'white' : 'transparent', color : ind == selectedRelation ? 'black' : 'white'}" value="home" v-for="(relation,ind) in relations" :key="ind" @click="selectedRelation = ind">
             <template v-slot:prepend>
               <v-icon icon="mdi-delete" style="color: var(--red)" @click="removeRelation(ind)"></v-icon>
@@ -172,7 +173,7 @@ export default {
       let relationResults = [];
 
       console.log(requestObject)
-      await axios.post('http://127.0.0.1:5000/documind', requestObject )
+      await axios.post('http://35.153.103.13/documind', requestObject)
         .then(res => {
           console.log("response data", res.data);
           relationResults = res.data;
@@ -196,7 +197,7 @@ export default {
         'dob': '',
         'relationImage': '',
         'documents': [],
-        'relationId':Math.floor((Math.random() * 1e9))
+        'relationId': Math.floor((Math.random() * 1e9))
       }
       this.relations.push(sampleRelation);
     },

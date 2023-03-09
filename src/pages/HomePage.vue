@@ -3,76 +3,96 @@
     <img src="src/assets/documindbg.png" style="height: 100%; object-fit: contain" />
     DocUMind
   </NavBar>
-  <div class="container" style="background-color: var(--dark)">
-
-    <v-table fixed-header style="width: 80%; margin: 20px; padding: 20px" class="elevation-3">
-      <thead>
-        <tr>
-          <th class="text-left">
-            <h3>Document Name</h3>
-          </th>
-          <th style="text-align: center;">
-            <h3>Document Type</h3>
-          </th>
-          <th style="text-align: center;">
-            <h3>Upload Date</h3>
-          </th>
-          <th style="text-align: center;">
-            <h3>Status</h3>
-          </th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <template v-for="(item, ind) in documents">
-          <template v-if="ind < documents.length - 1">
-            <tr style="font-size: small;">
-              <td>{{ item.name }} - {{ item.label }}</td>
-              <td style="text-align: center;">{{ item.docType }}</td>
-              <td style="text-align: center;">{{ item.uploadedDate }}</td>
-              <td style="display:flex; align-items:center; justify-content:center;">
-                <v-chip style="font-size:smaller; padding: 6px 8px; height: auto">
-                  {{ item.status }}
-                </v-chip>
-              </td>
-              <td>
-                <v-btn color="red" :icon="
-                  isExpanded(item.docid) ? 'mdi-chevron-up' : 'mdi-chevron-down'
-                " size="x-small" variant="tonal" @click="handleExpandClick(item.docid)"></v-btn>
-              </td>
-            </tr>
-            <td :colspan="5">
-              <v-expansion-panels v-model="panel">
-                <v-expansion-panel :value="item.docid">
-                  <v-expansion-panel-text>
-                    <DocumentDetail @showDetailView="handleShowDetailView" :documentId="ind" :features="item.features" :image="getDocumentImage(ind)" />
-                  </v-expansion-panel-text>
-                </v-expansion-panel>
-              </v-expansion-panels>
-            </td>
+  <v-layout>
+    <v-navigation-drawer floating permanent>
+      <v-list density="compact" nav>
+        <v-list-item :title="relation.relationName" :style="{ backgroundColor: ind == selectedRelation ? 'white' : 'transparent', color : ind == selectedRelation ? 'black' : 'white'}" value="home" v-for="(relation,ind) in relations" :key="ind" @click="selectedRelation = ind">
+          <template v-slot:prepend>
+            <v-icon icon="mdi-delete" style="color: var(--red)" @click="removeRelation(ind)"></v-icon>
           </template>
-          <template v-else-if="documents[ind].length > 1">
-            <tr>
+        </v-list-item>
+      </v-list>
+      <div style="width:100%">
+        <v-btn @click="addRelation" style="width:100%; margin-bottom:10px">
+          Add Relation
+        </v-btn>
+        <v-btn style="background-color:#B8252B; color:white; width:100%" @click="processDocs">
+          Submit
+        </v-btn>
+      </div>
+    </v-navigation-drawer>
+
+    <v-main class="main">
+      <v-table fixed-header style="width: 80%; margin: 20px; padding: 20px" class="elevation-3">
+        <thead>
+          <tr>
+            <th class="text-left">
+              <h3>Document Name</h3>
+            </th>
+            <th style="text-align: center;">
+              <h3>Document Type</h3>
+            </th>
+            <th style="text-align: center;">
+              <h3>Upload Date</h3>
+            </th>
+            <th style="text-align: center;">
+              <h3>Status</h3>
+            </th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <template v-for="(item, ind) in documents" :key="ind">
+            <template v-if="ind < documents.length - 1">
+              <tr style="font-size: small;">
+                <td>{{ item.name }} - {{ item.label }}</td>
+                <td style="text-align: center;">{{ item.docType }}</td>
+                <td style="text-align: center;">{{ item.uploadedDate }}</td>
+                <td style="display:flex; align-items:center; justify-content:center;">
+                  <v-chip style="font-size:smaller; padding: 6px 8px; height: auto">
+                    {{ item.status }}
+                  </v-chip>
+                </td>
+                <td>
+                  <v-btn color="red" :icon="
+              isExpanded(item.docid) ? 'mdi-chevron-up' : 'mdi-chevron-down'
+            " size="x-small" variant="tonal" @click="handleExpandClick(item.docid)"></v-btn>
+                </td>
+              </tr>
               <td :colspan="5">
-                <p style="text-align: center; padding: 10px; color: red; font-weight: 600;">Documents for more than one person detected.</p>
-                <div class="d-flex" style="justify-content: center;">
-                  <v-card v-for="(value, idx) in documents[ind]" :key="idx" width="400" :title="`Person ${idx + 1}`" class="ma-4">
-                    <v-card-text class="personCard" style="padding-top: 20px;">
-                      <div v-for="docLabel in value" :key="docLabel" class="mr-3 personCardDetails">
-                        <v-img :width="100" cover aspect-ratio="16/9" :src="'data:image/jpeg;base64,' + docLabel[0]"></v-img>
-                        <p>{{ docLabel[1] }}</p>
-                      </div>
-                    </v-card-text>
-                  </v-card>
-                </div>
+                <v-expansion-panels v-model="panel">
+                  <v-expansion-panel :value="item.docid">
+                    <v-expansion-panel-text>
+                      <DocumentDetail @showDetailView="handleShowDetailView" :documentId="ind" :features="item.features" :image="getDocumentImage(ind)" />
+                    </v-expansion-panel-text>
+                  </v-expansion-panel>
+                </v-expansion-panels>
               </td>
-            </tr>
+            </template>
+            <template v-else-if="documents[ind].length > 1">
+              <tr>
+                <td :colspan="5">
+                  <p style="text-align: center; padding: 10px; color: red; font-weight: 600;">Documents for more than one person detected.</p>
+                  <div class="d-flex" style="justify-content: center;">
+                    <v-card v-for="(value, idx) in documents[ind]" :key="idx" width="400" :title="`Person ${idx + 1}`" class="ma-4">
+                      <v-card-text class="personCard" style="padding-top: 20px;">
+                        <div v-for="docLabel in value" :key="docLabel" class="mr-3 personCardDetails">
+                          <v-img :width="100" cover aspect-ratio="16/9" :src="'data:image/jpeg;base64,' + docLabel[0]"></v-img>
+                          <p>{{ docLabel[1] }}</p>
+                        </div>
+                      </v-card-text>
+                    </v-card>
+                  </div>
+                </td>
+              </tr>
+            </template>
           </template>
-        </template>
 
-      </tbody>
-    </v-table>
-  </div>
+        </tbody>
+      </v-table>
+    </v-main>
+  </v-layout>
+
   <v-dialog v-model="dialog" width="90%">
     <DetailView :features="getDocumentFeatures" :image="getDocumentImage()" />
   </v-dialog>
@@ -168,14 +188,16 @@ export default {
 };
 </script>
 
-<style>
-.container {
+<style scoped>
+.main {
   width: 100%;
-  min-height: calc(100vh - 70px);
+  height: calc(100vh - 70px);
   display: flex;
-  flex-direction: column;
+  /* justify-content: center; */
   align-items: center;
-  background-color: rgb(239, 239, 239);
+  overflow: auto;
+  flex-direction: column;
+  background-color: var(--bgcolor);
 }
 
 .verifiedDocument {
@@ -212,5 +234,14 @@ tbody tr:nth-of-type(odd) {
   min-height: 150px;
   display: flex;
   flex-direction: column;
+}
+
+/deep/ .v-navigation-drawer__content {
+  background-color: #002e6d;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
 }
 </style>

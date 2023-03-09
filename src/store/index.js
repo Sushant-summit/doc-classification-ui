@@ -5,16 +5,16 @@ const store = createStore({
   state () {
     return {
       count: 0,
-      documents: [],
-      documentsResults: null,
+      relations: [],
+      relationsResults: null,
     }
   },
   mutations: {
-    setDocuments(state, documents) {
-      state.documents = documents;
+    setRelations(state, relations) {
+      state.relations = relations;
     },
-    setDocumentsResults(state, results) {
-      state.documentsResults = results;
+    setRelationsResults(state, relationsResults) {
+      state.relationsResults = relationsResults;
     }
   }
 })

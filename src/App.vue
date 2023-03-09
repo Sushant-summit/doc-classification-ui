@@ -49,6 +49,8 @@
   --dblue: #0F3460;
   --gray: #334756;
   --gray2: #2C394B;
+  --bgcolor: #F4F8FA;
+  --red: #B8252B;
 }
 
 </style>

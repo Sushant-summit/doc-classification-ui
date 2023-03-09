@@ -7,19 +7,8 @@
     <v-navigation-drawer floating permanent>
       <v-list density="compact" nav>
         <v-list-item :title="relation.relationName" :style="{ backgroundColor: ind == selectedRelation ? 'white' : 'transparent', color : ind == selectedRelation ? 'black' : 'white'}" value="home" v-for="(relation,ind) in relations" :key="ind" @click="selectedRelation = ind">
-          <template v-slot:prepend>
-            <v-icon icon="mdi-delete" style="color: var(--red)" @click="removeRelation(ind)"></v-icon>
-          </template>
         </v-list-item>
       </v-list>
-      <div style="width:100%">
-        <v-btn @click="addRelation" style="width:100%; margin-bottom:10px">
-          Add Relation
-        </v-btn>
-        <v-btn style="background-color:#B8252B; color:white; width:100%" @click="processDocs">
-          Submit
-        </v-btn>
-      </div>
     </v-navigation-drawer>
 
     <v-main class="main">
@@ -42,8 +31,8 @@
           </tr>
         </thead>
         <tbody>
-          <template v-for="(item, ind) in documents" :key="ind">
-            <template v-if="ind < documents.length - 1">
+          <template v-for="(item, ind) in relations[selectedRelation].documents" :key="ind">
+            <template v-if="ind < relations[selectedRelation].documents.length - 1">
               <tr style="font-size: small;">
                 <td>{{ item.name }} - {{ item.label }}</td>
                 <td style="text-align: center;">{{ item.docType }}</td>
@@ -60,26 +49,21 @@
                 </td>
               </tr>
               <td :colspan="5">
-                <p style="text-align: center; padding: 10px; color: red; font-weight: 600;">We suspect the uploaded documents are not of a single person.</p>
-                <p>These are the persons we detected</p>
-                <div class="d-flex" style="justify-content: center;">
-                  <v-card v-for="(value, idx) in documents[ind]" :key="idx" width="400" :title="`Person ${idx + 1}`" class="ma-4">
-                    <v-card-text class="personCard" style="padding-top: 20px;">
-                      <div v-for="docLabel in value" :key="docLabel" class="mr-3 personCardDetails">
-                        <v-img :width="100" cover aspect-ratio="16/9" :src="'data:image/jpeg;base64,' + docLabel[0]"></v-img>
-                        <p>{{ docLabel[1] }}</p>
-                      </div>
-                    </v-card-text>
-                  </v-card>
-                </div>
+                <v-expansion-panels v-model="panel">
+                  <v-expansion-panel :value="item.docid">
+                    <v-expansion-panel-text>
+                      <DocumentDetail @showDetailView="handleShowDetailView" :documentId="ind" :features="item.features" :image="getDocumentImage(ind)" />
+                    </v-expansion-panel-text>
+                  </v-expansion-panel>
+                </v-expansion-panels>
               </td>
             </template>
-            <template v-else-if="documents[ind].length > 1">
+            <template v-else-if="relations[selectedRelation].documents[ind].length > 1">
               <tr>
                 <td :colspan="5">
                   <p style="text-align: center; padding: 10px; color: red; font-weight: 600;">Documents for more than one person detected.</p>
                   <div class="d-flex" style="justify-content: center;">
-                    <v-card v-for="(value, idx) in documents[ind]" :key="idx" width="400" :title="`Person ${idx + 1}`" class="ma-4">
+                    <v-card v-for="(value, idx) in relations[selectedRelation].documents[ind]" :key="idx" width="400" :title="`Person ${idx + 1}`" class="ma-4">
                       <v-card-text class="personCard" style="padding-top: 20px;">
                         <div v-for="docLabel in value" :key="docLabel" class="mr-3 personCardDetails">
                           <v-img :width="100" cover aspect-ratio="16/9" :src="'data:image/jpeg;base64,' + docLabel[0]"></v-img>
@@ -122,7 +106,7 @@ export default {
       expanded: [],
       singleExpand: false,
       selectedDocumentId: 0,
-      panel: ["Form 1040 Tax Return", "Driving License"],
+      panel: [],
       headers: [
         {
           title: "Document Name",
@@ -149,12 +133,13 @@ export default {
         },
         { text: "", value: "data-table-expand" },
       ],
-      documents: this.$store.state.documentsResults,
+      relations: this.$store.state.relationsResults.relations,
+      selectedRelation: 0,
     };
   },
   computed: {
     getDocumentFeatures() {
-      return this.documents[this.selectedDocumentId].features;
+      return this.relations[this.selectedRelation].documents[this.selectedDocumentId].features;
     },
   },
   methods: {
@@ -181,8 +166,8 @@ export default {
     },
     getDocumentImage(index) {
       console.log("getting image", index)
-      if (index != null) return URL.createObjectURL(this.$store.state.documents[index].fileb64[0]);
-      else return URL.createObjectURL(this.$store.state.documents[this.selectedDocumentId].fileb64[0]);
+      if (index != null) return URL.createObjectURL(this.$store.state.relations[this.selectedRelation].documents[index].fileb64[0]);
+      else return URL.createObjectURL(this.$store.state.relations[this.selectedRelation].documents[this.selectedDocumentId].fileb64[0]);
     }
   },
   mounted() {

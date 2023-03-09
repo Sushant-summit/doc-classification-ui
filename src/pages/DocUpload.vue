@@ -166,19 +166,23 @@ export default {
 
       this.loading = true;
 
-      this.$store.commit('setRelations', relationsCopy);
+      this.$store.commit('setRelations', this.relations);
+      console.log(this.relations)
 
       let relationResults = [];
 
       console.log(requestObject)
       await axios.post('http://127.0.0.1:5000/documind', requestObject )
         .then(res => {
+          console.log("response data", res.data);
           relationResults = res.data;
         })
         .catch(err => {
           console.log(err)
           this.loading = false;
         })
+
+      console.log("Response", relationResults);
 
       this.$store.commit('setRelationsResults', relationResults);
 

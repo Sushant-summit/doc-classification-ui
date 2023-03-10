@@ -14,7 +14,7 @@
             </template>
           </v-list-item>
         </v-list>
-        <div style="width:100%; display: flex; flex-direction: column; align-items: center;">
+        <div style="width:100%; display: flex; flex-direction: column; align-items: center;" v-if="!loading">
           <v-btn @click="addRelation" style="width:80%; margin-bottom:10px ;text-decoration: underline; text-decoration-color: #B8252B;">
             Add Relation
           </v-btn>
@@ -23,10 +23,10 @@
           </v-btn>
         </div>
       </v-navigation-drawer>
-      <v-main class="main">
+      <v-main class="main" :style="{justifyContent: loading ? 'center' : 'start'}">
 
-        <v-progress-circular indeterminate v-if="loading" style="margin-top:50px"></v-progress-circular>
-        <p v-if="loading" class="ml-2">Hold tight processing your documents</p>
+        <v-progress-circular indeterminate v-if="loading"></v-progress-circular>
+        <p class="ml-2" v-if="loading">Hold tight processing your documents</p>
 
         <template v-else-if="relations.length > 0">
           <v-text-field label="Relation Name" :rules="rules" v-model="relations[selectedRelation].relationName" hide-details="auto" style="width:90%; max-height: 50px;" class="my-2"></v-text-field>
@@ -172,18 +172,19 @@ export default {
 
       let relationResults = [];
 
-      console.log(requestObject)
       await axios.post('http://35.153.103.13/documind', requestObject)
         .then(res => {
           console.log("response data", res.data);
           relationResults = res.data;
         })
         .catch(err => {
-          console.log(err)
+          this.snackbar = true;
+          this.errorMsg = `Something went wrong please try again.`;
           this.loading = false;
+          relationResults = null;
         })
 
-      console.log("Response", relationResults);
+      if (!relationResults) return;
 
       this.$store.commit('setRelationsResults', relationResults);
 

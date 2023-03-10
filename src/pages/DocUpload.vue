@@ -29,21 +29,23 @@
         <p class="ml-2" v-if="loading">Hold tight processing your documents</p>
 
         <template v-else-if="relations.length > 0">
-          <v-text-field label="Relation Name" :rules="rules" v-model="relations[selectedRelation].relationName" hide-details="auto" style="width:90%; max-height: 50px;" class="my-2"></v-text-field>
-          <v-file-input solo label="Click and upload user image" style="width:90%; max-height: 50px; margin-top: 10px;" accept="image/png, image/jpeg, application/pdf" prepend-icon="" prepend-inner-icon="mdi-file-document" v-model="relations[selectedRelation].relationImage"></v-file-input>
+          <div style="width: 70%; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding-top: 30px;">
+            <v-text-field label="Relation Name" :rules="rules" v-model="relations[selectedRelation].relationName" hide-details="auto" style="width:90%; max-height: 50px;" class="my-2"></v-text-field>
+            <v-file-input hide-details="true" solo label="Click and upload user image" style="width:90%; max-height: 50px;" accept="image/png, image/jpeg, application/pdf" prepend-icon="" prepend-inner-icon="mdi-file-document" v-model="relations[selectedRelation].relationImage"></v-file-input>
+          </div>
 
-          <div class="formContainer">
-            <v-expansion-panels>
+          <div class="formContainer" style="width: 70%;">
+            <v-expansion-panels style="width: 95%">
               <v-expansion-panel v-for="(document, ind) in relations[selectedRelation].documents" :key="document.docid">
                 <v-expansion-panel-title>
                   <v-btn icon="mdi-delete" style="color:red" class="mr-3" @click="removeDocument(selectedRelation,ind)"></v-btn>
                   <p>{{document.filename}}</p>
                 </v-expansion-panel-title>
-                <v-expansion-panel-text class="pa-1">
+                <v-expansion-panel-text class="pa-1" >
 
                   <v-text-field label="Document Name" :rules="rules" hide-details="auto" v-model="document.filename" class="my-2"></v-text-field>
 
-                  <v-file-input solo label="Click and upload a document here" v-model="document.fileb64" accept="image/png, image/jpeg, application/pdf" prepend-icon="" prepend-inner-icon="mdi-file-document"></v-file-input>
+                  <v-file-input hide-details="true" solo label="Click and upload a document here" v-model="document.fileb64" accept="image/png, image/jpeg, application/pdf" prepend-icon="" prepend-inner-icon="mdi-file-document"></v-file-input>
 
                   <v-text-field label="Classification Threshold" :rules="rules" hide-details="auto" v-model="document.payload.classificationThreshold" class="my-2" type="Number"></v-text-field>
 
@@ -52,7 +54,7 @@
                     <p style="font-size:small;" class="mb-2" v-if="configs.infoChecks[document.payload.doclabel]">For ex: <span style="padding-right: 5px" v-for="check,idx in configs.infoChecks[document.payload.doclabel]" :key="idx">{{ check }},</span>etc.</p>
                   </div>
 
-                  <v-select v-model="document.payload.doclabel" label="Pick document type" hide-details="auto" :items="labels"></v-select>
+                  <v-select style="padding-top: 10px;" v-model="document.payload.doclabel" label="Pick document type" hide-details="true" :items="labels"></v-select>
 
                   <div v-if="showIdChecks(document.payload.doclabel)">
                     <v-label>Pick features to find in the ID</v-label>
@@ -257,7 +259,7 @@ export default {
 
 /deep/ .v-expansion-panel-text__wrapper {
   display: grid !important;
-  align-items: start;
+  align-items: center;
   column-gap: 2rem;
   grid-template-columns: 1fr 1fr;
 }

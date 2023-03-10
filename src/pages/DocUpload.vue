@@ -8,7 +8,7 @@
       <v-navigation-drawer floating permanent>
         <v-list density="compact" nav>
           <p style="padding-bottom: 15px; font-size: smaller;">Application Id: 1412412</p>
-          <v-list-item :title="relation.relationName" :style="{ backgroundColor: ind == selectedRelation ? 'white' : 'transparent', color : ind == selectedRelation ? 'black' : 'white'}" value="home" v-for="(relation,ind) in relations" :key="ind" @click="selectedRelation = ind">
+          <v-list-item :title="relation.relationName ? relation.relationName : 'Borrower'" :style="{ backgroundColor: ind == selectedRelation ? 'white' : 'transparent', color : ind == selectedRelation ? 'black' : 'white'}" value="home" v-for="(relation,ind) in relations" :key="ind" @click="selectedRelation = ind">
             <template v-slot:prepend>
               <v-icon icon="mdi-delete" style="color: var(--red)" @click="removeRelation(ind)"></v-icon>
             </template>
@@ -39,10 +39,12 @@
               <v-expansion-panel v-for="(document, ind) in relations[selectedRelation].documents" :key="document.docid">
                 <v-expansion-panel-title>
                   <v-btn icon="mdi-delete" style="color:red" class="mr-3" @click="removeDocument(selectedRelation,ind)"></v-btn>
-                  <p>{{document.filename}}</p>
+                  <p v-if="document.filename">{{document.filename}}</p>
+                  <p v-else> Document</p>
                 </v-expansion-panel-title>
                 <v-expansion-panel-text class="pa-1" >
-
+                  
+                  <v-select style="padding-top: 10px;" v-model="document.payload.doclabel" label="Pick document type" hide-details="true" :items="labels"></v-select>
                   <v-text-field label="Document Name" :rules="rules" hide-details="auto" v-model="document.filename" class="my-2"></v-text-field>
 
                   <v-file-input hide-details="true" solo label="Click and upload a document here" v-model="document.fileb64" accept="image/png, image/jpeg, application/pdf" prepend-icon="" prepend-inner-icon="mdi-file-document"></v-file-input>
@@ -54,7 +56,6 @@
                     <p style="font-size:small;" class="mb-2" v-if="configs.infoChecks[document.payload.doclabel]">For ex: <span style="padding-right: 5px" v-for="check,idx in configs.infoChecks[document.payload.doclabel]" :key="idx">{{ check }},</span>etc.</p>
                   </div>
 
-                  <v-select style="padding-top: 10px;" v-model="document.payload.doclabel" label="Pick document type" hide-details="true" :items="labels"></v-select>
 
                   <div v-if="showIdChecks(document.payload.doclabel)">
                     <v-label>Pick features to find in the ID</v-label>
@@ -195,7 +196,7 @@ export default {
     },
     addRelation() {
       const sampleRelation = {
-        'relationName': 'Relation x',
+        'relationName': '',
         'relationImage': '',
         'documents': [],
         'relationId': Math.floor((Math.random() * 1e9))
@@ -211,7 +212,7 @@ export default {
     addDocument(relationNo) {
       const sampleDoc = {
         "docid": Math.floor((Math.random() * 1e9)).toString(),
-        "filename": "Document Name",
+        "filename": "",
         "fileb64": [],
         "payload": {
           "doclabel": "",

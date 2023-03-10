@@ -173,7 +173,7 @@ export default {
 
       let relationResults = [];
 
-      await axios.post('http://35.153.103.13/documind', requestObject)
+      await axios.post('http://52.70.151.60/documind', requestObject)
         .then(res => {
           console.log("response data", res.data);
           relationResults = res.data;

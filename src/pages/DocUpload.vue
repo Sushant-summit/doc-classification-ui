@@ -96,7 +96,7 @@ export default {
   data() {
     return {
       // checks: ["logo-stamp", "profile-image"],
-      labels: ["1040", "Other", "Driving", "PAN Card", "PFS", "Aadhar"],
+      labels: ["1040","Driving", "PAN Card", "PFS", "Aadhar"],
       documents: [],
       relations: [],
       selectedRelation: 0,

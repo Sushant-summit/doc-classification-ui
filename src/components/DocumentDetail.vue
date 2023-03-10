@@ -69,7 +69,6 @@ export default {
   height: max-content;
   overflow: hidden;
   justify-self: end;
-  border-radius: 5%;
   position: relative;
   width: 60%;
   align-self: center;

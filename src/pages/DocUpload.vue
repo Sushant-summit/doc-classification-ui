@@ -29,17 +29,19 @@
         <p class="ml-2" v-if="loading">Hold tight processing your documents</p>
 
         <template v-else-if="relations.length > 0">
-          <v-text-field label="Relation Name" :rules="rules" v-model="relations[selectedRelation].relationName" hide-details="auto" style="width:90%; max-height: 50px;" class="my-2"></v-text-field>
-          <v-file-input solo label="Click and upload user image" style="width:90%; max-height: 50px; margin-top: 10px;" accept="image/png, image/jpeg, application/pdf" prepend-icon="" prepend-inner-icon="mdi-file-document" v-model="relations[selectedRelation].relationImage"></v-file-input>
+          <div style="width: 70%; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding-top: 30px;">
+            <v-text-field label="Relation Name" :rules="rules" v-model="relations[selectedRelation].relationName" hide-details="auto" style="width:90%; max-height: 50px;" class="my-2"></v-text-field>
+            <v-file-input hide-details="true" solo label="Click and upload user image" style="width:90%; max-height: 50px;" accept="image/png, image/jpeg, application/pdf" prepend-icon="" prepend-inner-icon="mdi-file-document" v-model="relations[selectedRelation].relationImage"></v-file-input>
+          </div>
 
-          <div class="formContainer">
-            <v-expansion-panels>
+          <div class="formContainer" style="width: 70%;">
+            <v-expansion-panels style="width: 95%">
               <v-expansion-panel v-for="(document, ind) in relations[selectedRelation].documents" :key="document.docid">
                 <v-expansion-panel-title>
                   <v-btn icon="mdi-delete" style="color:red" class="mr-3" @click="removeDocument(selectedRelation,ind)"></v-btn>
                   <p>{{document.filename}}</p>
                 </v-expansion-panel-title>
-                <v-expansion-panel-text class="pa-1">
+                <v-expansion-panel-text class="pa-1" >
 
                   <v-text-field label="Document Name" :rules="rules" hide-details="auto" v-model="document.filename" class="my-2"></v-text-field>
 

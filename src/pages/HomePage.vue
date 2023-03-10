@@ -61,7 +61,7 @@
             <template v-else-if="relations[selectedRelation].documents[ind].length > 1">
               <tr style="overflow-x:scroll">
                 <td :colspan="5" >
-                  <p style="text-align: center; padding: 10px; color: red; font-weight: 600;">Documents for more than one person detected.</p>
+                  <p style="text-align: center; padding: 10px; color: red; font-weight: 600;">Different person detected!!</p>
                   <div class="d-flex" style="justify-content: center;">
                     <v-card v-for="(value, idx) in relations[selectedRelation].documents[ind]" :key="idx" width="400" :title="`Person ${idx + 1}`" class="ma-4">
                       <v-card-text class="personCard" style="padding-top: 20px;">

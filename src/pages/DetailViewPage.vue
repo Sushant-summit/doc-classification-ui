@@ -16,7 +16,7 @@
                 <div class="text-center">
                   <v-menu open-on-hover>
                     <template v-slot:activator="{ props }">
-                      <v-btn v-if="!feature.action || feature.action==''" v-bind="props" density="comfortable" style="font-size:x-small; color: white !important;; margin: 0 5px;" color="orange" variant="flat">
+                      <v-btn v-if="!feature.action || feature.action==''" v-bind="props" density="comfortable" style="font-size:x-small; color: white !important;; margin: 0 5px;" color="rgb(184, 37, 43)" variant="flat">
                         <span>Take action</span>
                       </v-btn>
 
@@ -73,7 +73,7 @@ export default {
     ],
     codeColors: {
       '404': 'red',
-      '402': 'yellow',
+      '402': 'white',
       '200': 'white',
     },
     canvasScale: 10,
@@ -169,7 +169,7 @@ export default {
 }
 
 nav {
-  background-color: var(--gray2);
+  background-color: #002e6d;
   color: var(--light);
   border-radius: 10px 10px 0px 0px;
   border-bottom: 1px solid grey;

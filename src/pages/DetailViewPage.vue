@@ -195,7 +195,6 @@ nav {
 }
 
 .DocViewer {
-  height: min-content;
   display: flex;
   margin-left: 10px;
   flex-direction: column;

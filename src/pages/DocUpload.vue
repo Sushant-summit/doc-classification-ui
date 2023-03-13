@@ -6,12 +6,13 @@
     </NavBar>
     <v-layout>
       <v-navigation-drawer floating permanent>
-        <v-list density="compact" nav>
-          <p style="padding-bottom: 15px; font-size: smaller;">Application Id: 1412412</p>
-          <v-list-item :title="relation.relationName ? relation.relationName : 'Borrower'" :style="{ backgroundColor: ind == selectedRelation ? 'white' : 'transparent', color : ind == selectedRelation ? 'black' : 'white'}" value="home" v-for="(relation,ind) in relations" :key="ind" @click="selectedRelation = ind">
+        <v-list density="compact">
+          <p class="pa-4" style="font-size:22px">Relations</p>
+          <v-list-item class="list-item" :style="{ backgroundColor: ind == selectedRelation ? '#C13C00' : 'transparent'}" value="home" v-for="(relation,ind) in relations" :key="ind" @click="selectedRelation = ind">
             <template v-slot:prepend>
-              <v-icon icon="mdi-delete" style="color: var(--red)" @click="removeRelation(ind)"></v-icon>
+              <v-icon icon="mdi-delete" @click="removeRelation(ind)"></v-icon>
             </template>
+            <v-list-item-title style="font-size: small;"> {{ relation.relationName ? relation.relationName : 'Borrower' }}</v-list-item-title>
           </v-list-item>
         </v-list>
         <div style="width:100%; display: flex; flex-direction: column; align-items: center;" v-if="!loading">
@@ -42,8 +43,8 @@
                   <p v-if="document.filename">{{document.filename}}</p>
                   <p v-else> Document</p>
                 </v-expansion-panel-title>
-                <v-expansion-panel-text class="pa-1" >
-                  
+                <v-expansion-panel-text class="pa-1">
+
                   <v-select style="padding-top: 10px;" v-model="document.payload.doclabel" label="Pick document type" hide-details="true" :items="labels"></v-select>
                   <v-text-field label="Document Name" :rules="rules" hide-details="auto" v-model="document.filename" class="my-2"></v-text-field>
 
@@ -55,7 +56,6 @@
                     <v-text-field :label="'Detail Check (Enter comma seperated value)'" :rules="rules" hide-details="auto" v-model="document.payload.detailCheck" class="mt-2"></v-text-field>
                     <p style="font-size:small;" class="mb-2" v-if="configs.infoChecks[document.payload.doclabel]">For ex: <span style="padding-right: 5px" v-for="check,idx in configs.infoChecks[document.payload.doclabel]" :key="idx">{{ check }},</span>etc.</p>
                   </div>
-
 
                   <div v-if="showIdChecks(document.payload.doclabel)">
                     <v-label>Pick features to find in the ID</v-label>
@@ -96,7 +96,7 @@ export default {
   data() {
     return {
       // checks: ["logo-stamp", "profile-image"],
-      labels: ["1040","Driving", "PAN Card", "PFS", "Aadhar"],
+      labels: ["1040", "Driving", "PAN Card", "PFS", "Aadhar"],
       documents: [],
       relations: [],
       selectedRelation: 0,
@@ -123,7 +123,7 @@ export default {
 
         const docsCopy = [];
 
-        if (this.relations[i].relationName.length == 0 ) {
+        if (this.relations[i].relationName.length == 0) {
           this.snackbar = true;
           this.errorMsg = `Please enter all the details for ${this.relations[i].relationName}`;
           return;
@@ -170,7 +170,7 @@ export default {
       this.loading = true;
 
       this.$store.commit('setRelations', this.relations);
-      console.log(this.relations)
+      console.log(requestObject)
 
       let relationResults = [];
 
@@ -277,6 +277,10 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 10px;
+  /* padding: 10px; */
+}
+.list-item {
+  color: white;
+  border-bottom: 2px #c13c00 solid;
 }
 </style>

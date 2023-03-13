@@ -22,9 +22,6 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log(to.name);
-  console.log(from.name);
-  console.log(store.state)
   if (to.name == "HOME" && !store.state.relationsResults) {
     next({ name: "DOC_UPLOAD" });
   }

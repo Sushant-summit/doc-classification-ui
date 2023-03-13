@@ -5,8 +5,10 @@
   </NavBar>
   <v-layout>
     <v-navigation-drawer floating permanent>
-      <v-list density="compact" nav>
-        <v-list-item :title="relation.relationName" :style="{ backgroundColor: ind == selectedRelation ? 'white' : 'transparent', color : ind == selectedRelation ? 'black' : 'white'}" value="home" v-for="(relation,ind) in relations" :key="ind" @click="selectedRelation = ind">
+      <v-list density="compact">
+        <p class="pa-4" style="font-size:22px">Relations</p>
+        <v-list-item :style="{ 'background-color': ind == selectedRelation ? '#c13c00' : 'transparent'}" value="home" v-for="(relation,ind) in relations" :key="ind" @click="selectedRelation = ind" class="list-item">
+          <v-list-item-title style="font-size: small;"> {{ relation.relationName }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -27,7 +29,9 @@
             <th style="text-align: center;">
               <h4>Recommended Action</h4>
             </th>
-            <th></th>
+            <th style="text-align: center;">
+              <h4>Actions</h4>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -42,10 +46,24 @@
                     {{ item.status }}
                   </v-chip>
                 </td>
-                <td>
-                  <v-btn color="red" :icon="
+                <td style="text-align: center;">
+                  <v-menu open-on-hover>
+                    <template v-slot:activator="{ props }">
+                      <v-btn v-bind="props" density="comfortable" style="font-size:x-small; margin-left: 10px; color: white !important;; margin: 0 5px;" color="rgb(184, 37, 43)" variant="flat">
+                        <span>Take action</span>
+                      </v-btn>
+                      <v-btn :ripple="true" :icon="
               isExpanded(item.docid) ? 'mdi-chevron-up' : 'mdi-chevron-down'
-            " size="x-small" variant="tonal" @click="handleExpandClick(item.docid)"></v-btn>
+            " size="xx-small" variant="text" @click="handleExpandClick(item.docid)"></v-btn>
+
+                    </template>
+
+                    <v-list style="padding: 0">
+                      <v-list-item v-for="(item, index) in items" :key="index">
+                        <v-list-item-title :style="{color: item.color, fontSize: 'small', fontWeight: 'medium'}">{{ item.title }}</v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
                 </td>
               </tr>
               <td :colspan="5">
@@ -60,7 +78,7 @@
             </template>
             <template v-else-if="relations[selectedRelation].documents[ind].length > 1">
               <tr style="overflow-x:scroll">
-                <td :colspan="5" >
+                <td :colspan="5">
                   <p style="text-align: center; padding: 10px; color: red; font-weight: 600;">Different person detected!!</p>
                   <div class="d-flex" style="justify-content: center;">
                     <v-card v-for="(value, idx) in relations[selectedRelation].documents[ind]" :key="idx" width="400" :title="`Person ${idx + 1}`" class="ma-4">
@@ -106,6 +124,11 @@ export default {
       expanded: [],
       singleExpand: false,
       selectedDocumentId: 0,
+      items: [
+        { title: 'Accept', color: 'green' },
+        { title: 'Reject', color: 'red' },
+        { title: 'Refer', color: 'orange' },
+      ],
       panel: [],
       headers: [
         {
@@ -232,6 +255,11 @@ tbody tr:nth-of-type(odd) {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 10px;
+  padding: 0px !important;
+}
+
+.list-item {
+  color: white;
+  border-bottom: 2px #c13c00 solid;
 }
 </style>

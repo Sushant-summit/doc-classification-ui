@@ -7,7 +7,7 @@
           <tbody>
             <tr v-for="(feature, ind) in features" :key="ind">
               <td>{{ feature.name }} </td>
-              <td style="color: black; font-weight: bold;">{{ feature.status }} <span v-if="feature.name=='Label Check'"> - {{ feature.predictedValue }}</span></td>
+              <td style="color: black; font-weight: bold;">{{ feature.status }} <span v-if="feature.name=='Label Check'"> - {{ feature["Predicted Value"] }}</span></td>
             </tr>
           </tbody>
         </v-table>

@@ -41,7 +41,7 @@
                 <v-table style="font-size:smaller">
                   <tbody>
                     <tr v-for="label in Object.keys(feature)" :key="label">
-                      <td v-if="label != 'coordinates' && label != 'name' && label != 'action' && label !='code' && feature[label]!=''">{{ label }}</td>
+                      <td v-if="label != 'coordinates' && label != 'name' && label != 'action' && label !='code' && feature[label]!=''">{{ label[0].toUpperCase() + label.slice(1)}}</td>
                       <td v-if="label != 'coordinates' && label != 'name' && label != 'action' && label !='code' && feature[label]!=''" style="color: black; font-weight: bold;">{{ feature[label] }}</td>
                     </tr>
                   </tbody>
@@ -76,7 +76,7 @@ export default {
       '402': 'white',
       '200': 'white',
     },
-    canvasScale: 10,
+    canvasScale: 10,  
   }),
   props: {
     features: Array,

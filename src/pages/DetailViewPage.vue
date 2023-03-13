@@ -56,7 +56,11 @@
         <div style="width:100%; overflow: auto;" ref="docViewer">
           <canvas ref='imageCanvas' style="width: 100%"></canvas>
         </div>
-        <v-slider v-model="canvasScale" :min="10" :max="100" :step="1" thumb-label style="width: 80%; height: 20px;"></v-slider>
+        <div style="display: flex; align-items: start; width: 100%;">
+          <v-icon icon="mdi mdi-magnify-minus" aria-label="Zoom Out" style="padding-top: 10px; padding-right: 10px;"></v-icon>
+          <v-slider v-model="canvasScale" :min="10" :max="100" :step="1" thumb-label style="width: 80%; height: 20px;"></v-slider>
+          <v-icon icon="mdi mdi-magnify-plus" aria-label="Zoom In" style="padding-top: 5px; padding-left: 10px;"></v-icon>
+        </div>
       </div>
       
     </div>
@@ -191,6 +195,7 @@ nav {
 }
 
 .DocViewer {
+  height: min-content;
   display: flex;
   margin-left: 10px;
   flex-direction: column;

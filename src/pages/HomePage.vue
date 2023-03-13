@@ -16,16 +16,16 @@
         <thead>
           <tr>
             <th class="text-left">
-              <h3>Document Name</h3>
+              <h4>Document Name</h4>
             </th>
             <th style="text-align: center;">
-              <h3>Document Type</h3>
+              <h4>Document Type</h4>
             </th>
             <th style="text-align: center;">
-              <h3>Upload Date</h3>
+              <h4>Upload Date</h4>
             </th>
             <th style="text-align: center;">
-              <h3>Status</h3>
+              <h4>Recommended Action</h4>
             </th>
             <th></th>
           </tr>
@@ -208,7 +208,7 @@ tbody tr:nth-of-type(odd) {
   background-color: #e9f1f5;
 }
 
-.v-expansion-panel-text__wrapper {
+/deep/.v-expansion-panel-text__wrapper {
   padding: 0px !important;
 }
 

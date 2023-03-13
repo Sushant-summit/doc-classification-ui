@@ -8,28 +8,30 @@
       <v-list density="compact">
         <p class="pa-4" style="font-size:22px">Relations</p>
         <v-list-item :style="{ 'background-color': ind == selectedRelation ? '#c13c00' : 'transparent'}" value="home" v-for="(relation,ind) in relations" :key="ind" @click="selectedRelation = ind" class="list-item">
-          <v-list-item-title style="font-size: small;"> {{ relation.relationName }}</v-list-item-title>
+          <v-list-item-title style="font-size: small;"> <span class="mdi mdi-account-outline"></span>
+            {{ relation.relationName }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
     <v-main class="main">
+      <loan-detail-header :relationName="relations[selectedRelation].relationName" />
       <v-table fixed-header style="width: 80%; margin: 20px; padding: 20px" class="elevation-3">
         <thead>
-          <tr>
-            <th class="text-left">
+          <tr class="headerROw">
+            <th class="text-left" style="border-bottom: 2px black solid !important">
               <h4>Document Name</h4>
             </th>
-            <th style="text-align: center;">
+            <th style="text-align: center; border-bottom: 2px black solid !important">
               <h4>Document Type</h4>
             </th>
-            <th style="text-align: center;">
+            <th style="text-align: center; border-bottom: 2px black solid !important">
               <h4>Upload Date</h4>
             </th>
-            <th style="text-align: center;">
+            <th style="text-align: center; border-bottom: 2px black solid !important">
               <h4>Recommended Action</h4>
             </th>
-            <th style="text-align: center;">
+            <th style=" text-align: center; border-bottom: 2px black solid !important">
               <h4>Actions</h4>
             </th>
           </tr>
@@ -49,18 +51,19 @@
                 <td style="text-align: center;">
                   <v-menu open-on-hover>
                     <template v-slot:activator="{ props }">
-                      <v-btn v-bind="props" density="comfortable" style="font-size:x-small; margin-left: 10px; color: white !important;; margin: 0 5px;" color="rgb(184, 37, 43)" variant="flat">
+                      <v-btn v-if="!item.action || item.action==''" v-bind="props" density="comfortable" style="font-size:x-small; margin-left: 10px; color: white !important;; margin: 0 5px;" color="rgb(184, 37, 43)" variant="flat">
                         <span>Take action</span>
                       </v-btn>
-                      <v-btn :ripple="true" :icon="
-              isExpanded(item.docid) ? 'mdi-chevron-up' : 'mdi-chevron-down'
-            " size="xx-small" variant="text" @click="handleExpandClick(item.docid)"></v-btn>
+                      <v-btn variant="text" v-else :style="{color: item.action.color, fontSize: 'small'}">{{ item.action.title }}ed</v-btn>
 
+                      <v-btn :ripple="true" :icon="
+                          isExpanded(item.docid) ? 'mdi-chevron-up' : 'mdi-chevron-down'
+                        " size="xx-small" variant="text" @click="handleExpandClick(item.docid)"></v-btn>
                     </template>
 
                     <v-list style="padding: 0">
-                      <v-list-item v-for="(item, index) in items" :key="index">
-                        <v-list-item-title :style="{color: item.color, fontSize: 'small', fontWeight: 'medium'}">{{ item.title }}</v-list-item-title>
+                      <v-list-item v-for="(data, index) in items" :key="index">
+                        <v-list-item-title @click="onActionClick(item, data)" :style="{color: data.color, fontSize: 'small', fontWeight: 'medium'}">{{ data.title }}</v-list-item-title>
                       </v-list-item>
                     </v-list>
                   </v-menu>
@@ -109,6 +112,7 @@
 import NavBar from "@/components/NavBar.vue";
 import DetailView from "@/pages/DetailViewPage.vue";
 import DocumentDetail from "@/components/DocumentDetail.vue";
+import LoanDetailHeader from "@/components/LoanDetailHeader.vue";
 
 export default {
   props: ['docsCopy'],
@@ -116,6 +120,7 @@ export default {
     NavBar,
     DetailView,
     DocumentDetail,
+    LoanDetailHeader,
   },
   data() {
     return {
@@ -166,6 +171,9 @@ export default {
     },
   },
   methods: {
+    onActionClick(item, data) {
+      item.action = data
+    },
     handleExpandClick(docid) {
       if (this.isExpanded(docid)) {
         const data = this.panel.filter((id) => {
@@ -223,12 +231,16 @@ export default {
   color: white;
 }
 
-tbody tr:nth-of-type(even) {
+tbody tr:nth-of-type(odd) {
   background-color: white;
 }
 
-tbody tr:nth-of-type(odd) {
+tbody tr:nth-of-type(even) {
   background-color: #e9f1f5;
+}
+
+tbody tr td {
+  border-bottom: none !important;
 }
 
 /deep/.v-expansion-panel-text__wrapper {
@@ -261,5 +273,9 @@ tbody tr:nth-of-type(odd) {
 .list-item {
   color: white;
   border-bottom: 2px #c13c00 solid;
+}
+
+.headerROw th {
+  border-bottom: 10px black solid !important;
 }
 </style>

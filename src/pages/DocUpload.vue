@@ -25,7 +25,6 @@
         </div>
       </v-navigation-drawer>
       <v-main class="main" :style="{justifyContent: loading ? 'center' : 'start'}">
-
         <v-progress-circular indeterminate v-if="loading"></v-progress-circular>
         <p class="ml-2" v-if="loading">Hold tight processing your documents</p>
 
@@ -89,9 +88,12 @@
 <script>
 import NavBar from "@/components/NavBar.vue";
 import axios from "axios";
+import LoanDetailHeader from "@/components/LoanDetailHeader.vue";
+
 export default {
   components: {
     NavBar,
+    LoanDetailHeader,
   },
   data() {
     return {

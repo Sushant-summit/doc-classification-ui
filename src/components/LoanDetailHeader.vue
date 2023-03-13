@@ -13,7 +13,7 @@
       </div>
       <div class="info-box">
         <span class="text-dark small d-block">Loan Risk</span>
-        <span class="text-danger font-weight-bold h6">HIGH</span>
+        <span class="text-danger font-weight-bold h6">{{ risk }}</span>
       </div>
     </div>
     <div class="d-flex flex-column gap-2 justify-space-between">
@@ -50,6 +50,7 @@
 export default {
   props: {
     relationName: String,
+    risk: String
   },
   data() {
     return {

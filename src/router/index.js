@@ -1,16 +1,18 @@
 // Composables
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store';
+import HomePage from '../pages/HomePage.vue';
+import DocUpload from '../pages/DocUpload.vue';
 const routes = [
   {
     path: '/home',
     name: "HOME",
-    component: () => import('@/pages/HomePage.vue'),
+    component: HomePage,
   },
   {
     path: '/',
     name : "DOC_UPLOAD",
-    component: () => import('@/pages/DocUpload.vue'),
+    component: DocUpload,
   },
 ]
 

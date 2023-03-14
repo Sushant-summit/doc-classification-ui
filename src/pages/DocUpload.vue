@@ -32,7 +32,7 @@
         <template v-else-if="relations.length > 0">
           <div style="width: 70%; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding-top: 30px;">
             <v-text-field label="Relation Name" :rules="rules" v-model="relations[selectedRelation].relationName" hide-details="auto" style="width:90%; max-height: 50px;" class="my-2"></v-text-field>
-            <v-file-input hide-details="true" solo label="Click and upload user image" style="width:90%; max-height: 50px;" accept="image/png, image/jpeg, application/pdf" prepend-icon="" prepend-inner-icon="mdi-file-document" v-model="relations[selectedRelation].relationImage"></v-file-input>
+            <v-file-input hide-details="true" solo label="Click and upload user image" style="width:90%; max-height: 50px;" accept="image/png, image/jpeg" prepend-icon="" prepend-inner-icon="mdi-file-document" v-model="relations[selectedRelation].relationImage"></v-file-input>
           </div>
 
           <div class="formContainer" style="width: 70%;">

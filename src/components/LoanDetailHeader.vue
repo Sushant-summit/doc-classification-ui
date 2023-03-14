@@ -12,7 +12,7 @@
         </div>
       </div>
       <div class="info-box">
-        <span class="text-dark small d-block">Loan Risk</span>
+        <span class="text-dark small d-block">Document Fraud Risk</span>
         <span class="text-danger font-weight-bold h6">{{ risk }}</span>
       </div>
     </div>

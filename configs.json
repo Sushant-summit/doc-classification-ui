@@ -5,9 +5,9 @@
       "autoApprovalThreshold": 95
     },
     "idChecks": {
-      "PAN Card":["logo-stamp", "profile-image"],
-      "Aadhar": ["logo-stamp", "profile-image"],
-      "Driving": ["profile-image"]
+      "PAN Card":[{"value":"logo-stamp","label": "Logo Stamp"}, {"value":"profile-image","label":"Profile Image"}],
+      "Aadhar": [{"value":"logo-stamp","label": "Logo Stamp"}, {"value":"profile-image","label":"Profile Image"}],
+      "Driving": [{"value":"profile-image","label":"Profile Image"}]
     },
     "infoChecks":{
       "PAN Card": ["Name", "PAN Card Number"],

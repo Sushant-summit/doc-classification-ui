@@ -15,7 +15,7 @@
             <v-list-item-title style="font-size: small;"> {{ relation.relationName ? relation.relationName : 'Borrower' }}</v-list-item-title>
           </v-list-item>
         </v-list>
-        <div style="width:100%; display: flex; flex-direction: column; align-items: center;" v-if="!loading">
+        <div style="width:100%; display: flex; flex-direction: column; align-items: center;" v-if="!loading"  class="pb-5">
           <v-btn @click="addRelation" style="width:80%; margin-bottom:10px ;text-decoration: underline; text-decoration-color: #B8252B;">
             Add Relation
           </v-btn>
@@ -68,7 +68,7 @@
             </div>
           </div>
         </template>
-        <h2 v-else class="mt-5" style="font-weight: 500;">Please create a relation</h2>
+        <h3 v-else class="mt-5" style="font-weight: 500;">Please create a relation</h3>
 
       </v-main>
     </v-layout>

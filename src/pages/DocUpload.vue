@@ -58,7 +58,7 @@
 
                   <div v-if="showIdChecks(document.payload.doclabel)">
                     <v-label>Pick features to find in the ID</v-label>
-                    <v-checkbox v-for="checks in configs.idChecks[document.payload.doclabel]" :key="checks" :label="checks" :value="checks" hide-details="true" v-model="document.payload.idChecks"></v-checkbox>
+                    <v-checkbox v-for="checks in configs.idChecks[document.payload.doclabel]" :key="checks" :label="checks.label" :value="checks.value" hide-details="true" v-model="document.payload.idChecks"></v-checkbox>
                   </div>
                 </v-expansion-panel-text>
               </v-expansion-panel>
@@ -176,7 +176,7 @@ export default {
 
       let relationResults = [];
 
-      await axios.post('http://127.0.0.1:5000/documind', requestObject)
+      await axios.post('http://52.70.151.60/documind', requestObject)
         .then(res => {
           console.log("response data", res.data);
           relationResults = res.data;

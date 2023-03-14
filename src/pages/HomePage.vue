@@ -15,7 +15,7 @@
     </v-navigation-drawer>
 
     <v-main class="main">
-      <loan-detail-header :relationName="relations[selectedRelation].relationName" />
+      <loan-detail-header :relationName="relations[selectedRelation].relationName" :risk="relations[selectedRelation].risk"/>
       <v-table fixed-header style="width: 80%; margin: 20px; padding: 20px" class="elevation-3">
         <thead>
           <tr class="headerROw">

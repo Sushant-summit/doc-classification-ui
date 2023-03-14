@@ -4,7 +4,7 @@
       <div class="d-flex gap-2">
         <div class="info-box flex-grow-1">
           <span class="text-dark small d-block">Application Number</span>
-          <span class="brand-text-primary h6">123456</span>
+          <span class="brand-text-primary h6">{{applicationId}}</span>
         </div>
         <div class="info-box flex-grow-1">
           <span class="text-dark small d-block">Loan Status</span>
@@ -50,7 +50,8 @@
 export default {
   props: {
     relationName: String,
-    risk: String
+    risk: String,
+    applicationId: String
   },
   data() {
     return {

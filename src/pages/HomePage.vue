@@ -15,7 +15,7 @@
     </v-navigation-drawer>
 
     <v-main class="main">
-      <loan-detail-header :relationName="relations[selectedRelation].relationName" :risk="relations[selectedRelation].risk"/>
+      <loan-detail-header :applicationId="applicationId" :relationName="relations[selectedRelation].relationName" :risk="relations[selectedRelation].risk"/>
       <v-table fixed-header style="width: 80%; margin: 20px; padding: 20px" class="elevation-3">
         <thead>
           <tr class="headerROw">
@@ -161,6 +161,7 @@ export default {
         },
         { text: "", value: "data-table-expand" },
       ],
+      applicationId: this.$store.state.relationsResults.applicationId,
       relations: this.$store.state.relationsResults.relations,
       selectedRelation: 0,
     };

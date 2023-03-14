@@ -7,7 +7,8 @@
     <v-layout>
       <v-navigation-drawer floating permanent>
         <v-list density="compact">
-          <p class="pa-4" style="font-size:22px">Relations</p>
+          <p class="pa-4">Application id:<br/> <span style="font-size:22px">{{ applicationId }}</span></p>
+          <p class="pa-4 pt-0" >Relations</p>
           <v-list-item class="list-item" :style="{ backgroundColor: ind == selectedRelation ? '#C13C00' : 'transparent'}" value="home" v-for="(relation,ind) in relations" :key="ind" @click="selectedRelation = ind">
             <template v-slot:prepend>
               <v-icon icon="mdi-delete" @click="removeRelation(ind)"></v-icon>
@@ -68,7 +69,11 @@
             </div>
           </div>
         </template>
-        <h3 v-else class="mt-5" style="font-weight: 500;">Please create a relation</h3>
+        <div v-else>
+          <h3 class="mt-5" style="font-weight: 500;">Application Id</h3>
+          <v-text-field label="Relation Name" :rules="rules" v-model="applicationId"  hide-details="auto" style="width:120%; max-height: 50px;" class="my-2"></v-text-field>
+          <h3 class="mt-10" style="font-weight: 500;">Please create a relation</h3>
+        </div>
 
       </v-main>
     </v-layout>
@@ -106,6 +111,7 @@ export default {
       snackbar: false,
       errorMsg: null,
       configs: null,
+      applicationId: null,
     }
   },
   methods: {
@@ -171,7 +177,7 @@ export default {
       }
 
       const requestObject = {
-        'applicationId': 9876543210,
+        'applicationId': this.applicationId,
         'relations': relationsCopy
       }
 
@@ -182,7 +188,7 @@ export default {
 
       let relationResults = [];
 
-      await axios.post('http://52.70.151.60/documind', requestObject)
+      await axios.post('http://127.0.0.1:5000/documind', requestObject)
         .then(res => {
           console.log("response data", res.data);
           relationResults = res.data;

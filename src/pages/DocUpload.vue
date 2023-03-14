@@ -15,7 +15,7 @@
             <v-list-item-title style="font-size: small;"> {{ relation.relationName ? relation.relationName : 'Borrower' }}</v-list-item-title>
           </v-list-item>
         </v-list>
-        <div style="width:100%; display: flex; flex-direction: column; align-items: center;" v-if="!loading"  class="pb-5">
+        <div style="width:100%; display: flex; flex-direction: column; align-items: center;" v-if="!loading" class="pb-5">
           <v-btn @click="addRelation" style="width:80%; margin-bottom:10px ;text-decoration: underline; text-decoration-color: #B8252B;">
             Add Relation
           </v-btn>
@@ -100,7 +100,7 @@ export default {
       // checks: ["logo-stamp", "profile-image"],
       labels: ["1040", "Driving", "PAN Card", "PFS", "Aadhar"],
       documents: [],
-      relations: [],
+      relations: this.$store.state.relations,
       selectedRelation: 0,
       loading: false,
       snackbar: false,
@@ -114,6 +114,8 @@ export default {
       return a.includes(docLabel);
     },
     async processDocs() {
+
+      this.$store.commit('setRelations', this.relations);
 
       const relationsCopy = [];
 
@@ -131,7 +133,9 @@ export default {
           return;
         }
 
-        relationsCopy[i].relationImage = await this.toBase64(relationsCopy[i].relationImage[0]);
+        if (relationsCopy[i].relationImage.length > 0) relationsCopy[i].relationImage = await this.toBase64(relationsCopy[i].relationImage[0]);
+        else relationsCopy[i].relationImage = "";
+
 
         const documents = this.relations[i].documents;
 
@@ -153,10 +157,12 @@ export default {
 
           let detailCheck = docsCopy[j].payload.detailCheck;
 
-          detailCheck = detailCheck.split(',');
-          detailCheck = detailCheck.map(check => {
-            return check.trim();
-          })
+          if (!Array.isArray(detailCheck)) {
+            detailCheck = detailCheck.split(',');
+            detailCheck = detailCheck.map(check => {
+              return check.trim();
+            })
+          }
 
           docsCopy[j].payload.detailCheck = detailCheck;
         }
@@ -171,7 +177,7 @@ export default {
 
       this.loading = true;
 
-      this.$store.commit('setRelations', this.relations);
+      
       console.log(requestObject)
 
       let relationResults = [];

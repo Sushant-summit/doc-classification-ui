@@ -273,6 +273,10 @@ export default {
   grid-template-columns: 1fr 1fr;
 }
 
+/deep/ .v-field__field {
+  overflow: hidden;
+}
+
 .formContainer {
   margin-top: 50px;
   border-radius: 5px;

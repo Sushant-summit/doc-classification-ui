@@ -31,9 +31,10 @@
           <div>File Name: {{ file.name }}</div>
           <div>File Size: {{ file.size }} bytes</div>
         </div>
+        
+        <v-progress-circular indeterminate v-if="loading"></v-progress-circular>
       </div>
 
-      <v-progress-circular indeterminate v-if="loading"></v-progress-circular>
 
     </div>
 

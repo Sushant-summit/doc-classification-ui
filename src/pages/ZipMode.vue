@@ -24,6 +24,7 @@
         <div class="dropZone-uploaded-info">
           <span class="dropZone-title">Uploaded</span>
           <v-btn type="button" style="background-color:#B8252B; color:white;" class="mt-8 btn btn-primary removeFile" @click="removeFile">Remove File</v-btn>
+          <v-btn type="button" class="mt-8 btn btn-primary removeFile" @click="uploadZipFile">Submit</v-btn>
         </div>
 
         <div class="uploadedFile-info" style="padding: 10px;">

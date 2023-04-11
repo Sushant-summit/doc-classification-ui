@@ -22,12 +22,13 @@
       </div>
       <div v-else class="dropZone-uploaded p-8" style="margin:0 auto">
         <div class="dropZone-uploaded-info">
-          <span class="dropZone-title">Uploaded</span>
-          <v-btn type="button" style="background-color:#B8252B; color:white;" class="mt-8 btn btn-primary removeFile" @click="removeFile">Remove File</v-btn>
-          <v-btn type="button" class="mt-8 btn btn-primary removeFile" @click="uploadZipFile">Submit</v-btn>
-          <div style="padding: 10px;">
-            <v-progress-circular indeterminate v-if="loading"></v-progress-circular>
-            <p>Processing Your Documents</p>
+          <div style="display: flex;"> 
+            <v-btn type="button" style="background-color:#B8252B; color:white;" class="mr-8 mt-8 btn btn-primary removeFile" @click="removeFile">Remove File</v-btn>
+            <v-btn type="button" class="mt-8 btn btn-primary removeFile" @click="uploadZipFile">Submit</v-btn>
+          </div>
+          <div style="padding-top: 40px;" v-if="loading">
+            <v-progress-circular indeterminate></v-progress-circular>
+            <p> Processing Your Documents</p>
           </div>
         </div>
 
@@ -172,7 +173,6 @@ export default {
 
 .dropZone-uploaded {
   width: 80%;
-  height: 200px;
   position: relative;
   border: 2px dashed #eee;
 }
@@ -182,10 +182,9 @@ export default {
   flex-direction: column;
   align-items: center;
   color: #A8A8A8;
-  position: absolute;
-  top: 50%;
+  position: relative;
+  padding-top: 20px;
   width: 100%;
-  transform: translate(0, -50%);
   text-align: center;
 }
 

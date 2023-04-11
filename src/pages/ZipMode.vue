@@ -90,7 +90,7 @@ export default {
       
       const formData = new FormData();
       formData.append('file', this.file);
-      await fetch('http://127.0.0.1:8000/upload-zip', {
+      await fetch('http://52.70.151.60/upload-zip', {
         method: 'POST',
         body: formData
       })

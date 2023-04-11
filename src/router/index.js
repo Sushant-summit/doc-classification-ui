@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store';
 import HomePage from '../pages/HomePage.vue';
 import DocUpload from '../pages/DocUpload.vue';
+import ZipMode from '../pages/ZipMode.vue';
 const routes = [
   {
     path: '/home',
@@ -14,6 +15,11 @@ const routes = [
     name : "DOC_UPLOAD",
     component: DocUpload,
   },
+  {
+    path: '/zip',
+    name : "ZIP_MODE",
+    component: ZipMode,
+  }
 ]
 
 const router = createRouter({

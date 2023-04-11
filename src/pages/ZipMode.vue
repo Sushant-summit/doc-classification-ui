@@ -32,6 +32,9 @@
           <div>File Size: {{ file.size }} bytes</div>
         </div>
       </div>
+
+      <v-progress-circular indeterminate v-if="loading"></v-progress-circular>
+
     </div>
 
 
@@ -48,7 +51,8 @@ export default {
   },
   data() {
     return {
-      file: null
+      file: null,
+      loading: false
     }
   },
   methods: {
@@ -77,12 +81,28 @@ export default {
       this.file = '';
     },
     async uploadZipFile() {
+      this.loading = true;
+      
       const formData = new FormData();
-      formData.append('zipFile', this.file);
-      const response = await fetch('/upload', {
+      formData.append('file', this.file);
+      await fetch('http://127.0.0.1:8000/upload-zip', {
         method: 'POST',
         body: formData
-      });
+      })
+      .then(response => {
+        if(!response.ok){
+          throw new Error('Http error');
+        }
+        return response.blob();
+      }).then(blob => {
+        const url = URL.createObjectURL(blob);
+        console.log(url)
+        window.open(url, 'result.zip');
+        this.loading = false;
+      })
+      .catch(error => {
+        console.log(error)
+      })
       // handle response from backend
     }
   },

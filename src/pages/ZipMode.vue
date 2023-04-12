@@ -22,8 +22,9 @@
       </div>
       <div v-else class="dropZone-uploaded p-8" style="margin:0 auto">
         <div class="dropZone-uploaded-info">
-          <div style="display: flex;"> 
-            <v-btn type="button" style="background-color:#B8252B; color:white;" class="mr-8 mt-8 btn btn-primary removeFile" @click="removeFile">Remove File</v-btn>
+          <div style="display: flex;">
+            <v-btn type="button" style="background-color:#B8252B; color:white;"
+              class="mr-8 mt-8 btn btn-primary removeFile" @click="removeFile">Remove File</v-btn>
             <v-btn type="button" class="mt-8 btn btn-primary removeFile" @click="uploadZipFile">Submit</v-btn>
           </div>
           <div style="padding-top: 40px;" v-if="loading">
@@ -32,11 +33,14 @@
           </div>
         </div>
 
-        <div class="uploadedFile-info" style="padding: 10px;">
+        <div class="uploadedFile-info" style="padding: 20px 20px 0 20px;">
           <div>File Name: {{ file.name }}</div>
           <div>File Size: {{ file.size }} bytes</div>
         </div>
         
+        <div style="margin:20px; width: 40%">
+          <v-select dense outlined v-model="selectedModel" :items="items" label="Select a model"></v-select>
+        </div>
       </div>
 
 
@@ -57,7 +61,9 @@ export default {
   data() {
     return {
       file: null,
-      loading: false
+      loading: false,
+      selectedModel: 'Underwriting Model',
+      items: ['Underwriting Model', 'Indian Model'],
     }
   },
   methods: {
@@ -86,28 +92,31 @@ export default {
       this.file = '';
     },
     async uploadZipFile() {
+      let url = 'http://52.70.151.60/upload-zip';
+      if(this.selectedModel==='Underwriting Model') url = 'http://52.70.151.60/upload-zip-2'
+
       this.loading = true;
-      
+
       const formData = new FormData();
       formData.append('file', this.file);
-      await fetch('http://52.70.151.60/upload-zip', {
+      await fetch(url, {
         method: 'POST',
         body: formData
       })
-      .then(response => {
-        if(!response.ok){
-          throw new Error('Http error');
-        }
-        return response.blob();
-      }).then(blob => {
-        const url = URL.createObjectURL(blob);
-        console.log(url)
-        window.open(url, 'result.zip');
-        this.loading = false;
-      })
-      .catch(error => {
-        console.log(error)
-      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Http error');
+          }
+          return response.blob();
+        }).then(blob => {
+          const url = URL.createObjectURL(blob);
+          console.log(url)
+          window.open(url, 'result.zip');
+          this.loading = false;
+        })
+        .catch(error => {
+          console.log(error)
+        })
       // handle response from backend
     }
   },

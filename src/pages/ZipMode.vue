@@ -78,11 +78,7 @@ export default {
       this.createFile(files[0]);
     },
     createFile(file) {
-      if (file.size > 5000000) {
-        alert('please check file size no over 5 MB.')
-        this.dragging = false;
-        return;
-      }
+
 
       this.file = file;
       console.log(this.file);

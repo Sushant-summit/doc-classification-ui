@@ -53,7 +53,7 @@
 
 <script>
 import NavBar from "@/components/NavBar.vue";
-
+import axios from "axios";
 export default {
   components: {
     NavBar,
@@ -99,11 +99,12 @@ export default {
 
       const formData = new FormData();
       formData.append('file', this.file);
-      await fetch(url, {
-        method: 'POST',
-        body: formData,
-        timeout: 0,
-      })
+      await axios.post(url, 
+        formData,
+        {
+          timeout: 300000000
+        }
+      )
         .then(response => {
           if (!response.ok) {
             throw new Error('Http error');

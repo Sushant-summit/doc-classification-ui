@@ -102,7 +102,7 @@ export default {
       await fetch(url, {
         method: 'POST',
         body: formData,
-        timeout: 300000000,
+        timeout: 0,
       })
         .then(response => {
           if (!response.ok) {

@@ -101,7 +101,8 @@ export default {
       formData.append('file', this.file);
       await fetch(url, {
         method: 'POST',
-        body: formData
+        body: formData,
+        timeout: 300000000,
       })
         .then(response => {
           if (!response.ok) {

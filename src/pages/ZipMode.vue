@@ -21,6 +21,16 @@
         </div>
       </div>
       <div v-else class="dropZone-uploaded p-8" style="margin:0 auto">
+        <div class="uploadedFile-info" style="padding: 20px 20px 0 20px;">
+          <div>File Name: {{ file.name }}</div>
+          <div>File Size: {{ file.size }} bytes</div>
+        </div>
+        
+        <div style="margin:20px 20px 0 20px; width: 40%">
+          <v-select dense variant="outlined" v-model="selectedModel" :items="items" label="Select a model"></v-select>
+        </div>
+
+
         <div class="dropZone-uploaded-info">
           <div style="display: flex;">
             <v-btn type="button" style="background-color:#B8252B; color:white;"
@@ -31,15 +41,6 @@
             <v-progress-circular indeterminate></v-progress-circular>
             <p> Processing Your Documents</p>
           </div>
-        </div>
-
-        <div class="uploadedFile-info" style="padding: 20px 20px 0 20px;">
-          <div>File Name: {{ file.name }}</div>
-          <div>File Size: {{ file.size }} bytes</div>
-        </div>
-        
-        <div style="margin:20px; width: 40%">
-          <v-select dense outlined v-model="selectedModel" :items="items" label="Select a model"></v-select>
         </div>
       </div>
 
@@ -188,7 +189,7 @@ export default {
   align-items: center;
   color: #A8A8A8;
   position: relative;
-  padding-top: 20px;
+  padding-bottom: 40px;
   width: 100%;
   text-align: center;
 }

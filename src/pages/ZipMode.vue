@@ -62,8 +62,8 @@ export default {
     return {
       file: null,
       loading: false,
-      selectedModel: 'Underwriting Model',
-      items: ['Underwriting Model', 'Indian Model'],
+      selectedModel: 'SVM Model',
+      items: ['SVM Model', 'LayoutLMv3 Model'],
     }
   },
   methods: {
@@ -79,7 +79,6 @@ export default {
     },
     createFile(file) {
 
-
       this.file = file;
       console.log(this.file);
       this.dragging = false;
@@ -89,7 +88,7 @@ export default {
     },
     async uploadZipFile() {
       let url = 'http://52.70.151.60/upload-zip';
-      if(this.selectedModel==='Underwriting Model') url = 'http://52.70.151.60/upload-zip-2'
+      if(this.selectedModel==='SVM Model') url = 'http://52.70.151.60/upload-zip-2'
 
       this.loading = true;
 

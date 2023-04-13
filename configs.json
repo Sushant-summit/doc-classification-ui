@@ -6,12 +6,12 @@
     },
     "idChecks": {
       "PAN Card":[{"value":"logo-stamp","label": "Logo Stamp"}, {"value":"profile-image","label":"Profile Image"}],
-      "Aadhar": [{"value":"logo-stamp","label": "Logo Stamp"}, {"value":"profile-image","label":"Profile Image"}],
+      "ID": [{"value":"logo-stamp","label": "Logo Stamp"}, {"value":"profile-image","label":"Profile Image"}],
       "Driving": [{"value":"profile-image","label":"Profile Image"}]
     },
     "infoChecks":{
       "PAN Card": ["Name", "PAN Card Number"],
-      "Aadhar" : ["Name", "Aadhar Number", "Gender"],
+      "ID" : ["Name", "ID Number", "Gender"],
       "Driving": ["Name", "Driving License Number","Date of Issue"]
     }
   }

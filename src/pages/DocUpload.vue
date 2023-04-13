@@ -103,7 +103,7 @@ export default {
   data() {
     return {
       // checks: ["logo-stamp", "profile-image"],
-      labels: ["1040", "Driving", "PAN Card", "PFS", "Aadhar"],
+      labels: ["1040", "Driving", "PAN Card", "PFS", "ID"],
       documents: [],
       relations: this.$store.state.relations,
       selectedRelation: 0,
@@ -116,7 +116,7 @@ export default {
   },
   methods: {
     showIdChecks(docLabel) {
-      let a = ["Aadhar", "PAN Card", "Driving"]
+      let a = ["ID", "PAN Card", "Driving"]
       return a.includes(docLabel);
     },
     async processDocs() {

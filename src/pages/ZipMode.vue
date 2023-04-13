@@ -37,9 +37,10 @@
               class="mr-8 mt-8 btn btn-primary removeFile" @click="removeFile">Remove File</v-btn>
             <v-btn type="button" class="mt-8 btn btn-primary removeFile" @click="uploadZipFile">Submit</v-btn>
           </div>
-          <div v-else>
+          <div style="display: flex;" v-else>
             <v-btn type="button" style="background-color:#B8252B; color:white;"
-              class="mr-8 mt-8 btn btn-primary removeFile" :href="downloadUrl" download="result.zip">Download Result Zip</v-btn>
+              class="mr-8 mt-8 btn btn-primary removeFile" @click="removeFile">Remove File</v-btn>
+            <v-btn type="button" style="font-size:smaller" class="mt-8 btn btn-primary removeFile" :href="downloadUrl" download="result.zip">Download Results<i class="fa fa-download pl-2"></i></v-btn>
           </div>
           <div style="padding-top: 40px;" v-if="loading">
             <v-progress-circular indeterminate></v-progress-circular>
@@ -90,7 +91,8 @@ export default {
       this.dragging = false;
     },
     removeFile() {
-      this.file = '';
+      this.file = null;
+      this.downloadUrl = null;
     },
     async uploadZipFile() {
       let url = 'http://52.70.151.60/upload-zip';

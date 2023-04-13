@@ -1,8 +1,6 @@
 <template>
-  <div style="width: 100%;">
-    <NavBar>
-      <img src="src/assets/documindbg.png" style="height: 100%; object-fit: contain" />
-      DocUMind
+  <div style="width: 100%;" class="zipWrapper">
+    <NavBar style="background-color: white;">
     </NavBar>
 
     <div style="margin:40px auto">
@@ -14,7 +12,7 @@
             <span class="dropZone-title">Drop file or click to upload</span>
             <div class="dropZone-upload-limit-info">
               <div>extension support: zip</div>
-              <div>maximum file size: 5 MB</div>
+              <!-- <div>maximum file size: 5 MB</div> -->
             </div>
           </div>  
           <input type="file" @change="onChange">
@@ -132,14 +130,21 @@ export default {
 </script>
 
 <style>
+.zipWrapper{
+  background-color: var(--bgcolor);
+  height: 100%;
+}
+
 .dropZone {
   width: 80%;
-  height: 200px;
+  height: 300px;
+  background-color: white;
   position: relative;
-  border: 2px dashed #eee;
+  border: 2px solid #2e94c4;
 }
 
 .dropZone:hover {
+  background-color: var(--bgcolor);
   border: 2px solid #2e94c4;
 }
 
@@ -185,8 +190,9 @@ export default {
 
 .dropZone-uploaded {
   width: 80%;
+  background-color: white;
   position: relative;
-  border: 2px dashed #eee;
+  border: 2px solid #2e94c4;
 }
 
 .dropZone-uploaded-info {

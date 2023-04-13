@@ -1,7 +1,7 @@
 <template>
   <router-link to="/">
     <nav class="shadow" style="display: flex; justify-content:space-between">
-      <img src="/src/assets/logo.svg" />
+      <img src="/src/assets/logo2.svg"  style="padding: 4px;"/>
       <router-link to="/zip">
         <v-btn style="background-color:#B8252B; color:white;" class="mr-4">
           Zip Mode
@@ -40,8 +40,9 @@ nav {
   display: flex;
   /* justify-content: center; */
   height: 70px;
-  background-color: #E1E9EE;
   color: white;
+  background-color: white;
+  border-bottom: 2px solid #E1E9EE;
   /* border-bottom: 1px solid grey; */
 }
 

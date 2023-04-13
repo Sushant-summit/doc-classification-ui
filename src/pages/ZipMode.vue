@@ -32,10 +32,14 @@
 
 
         <div class="dropZone-uploaded-info">
-          <div style="display: flex;">
+          <div style="display: flex;" v-if="!downloadUrl">
             <v-btn type="button" style="background-color:#B8252B; color:white;"
               class="mr-8 mt-8 btn btn-primary removeFile" @click="removeFile">Remove File</v-btn>
             <v-btn type="button" class="mt-8 btn btn-primary removeFile" @click="uploadZipFile">Submit</v-btn>
+          </div>
+          <div v-else>
+            <v-btn type="button" style="background-color:#B8252B; color:white;"
+              class="mr-8 mt-8 btn btn-primary removeFile" :href="downloadUrl" download="result.zip">Download Result Zip</v-btn>
           </div>
           <div style="padding-top: 40px;" v-if="loading">
             <v-progress-circular indeterminate></v-progress-circular>
@@ -65,6 +69,7 @@ export default {
       loading: false,
       selectedModel: 'SVM Model',
       items: ['SVM Model', 'LayoutLMv3 Model'],
+      downloadUrl: null,
     }
   },
   methods: {
@@ -106,9 +111,8 @@ export default {
           }
           return response.blob();
         }).then(blob => {
-          const url = URL.createObjectURL(blob);
-          console.log(url)
-          window.open(url, 'result.zip');
+          this.downloadUrl = URL.createObjectURL(blob);
+          console.log(this.downloadUrl)
           this.loading = false;
         })
         .catch(error => {
